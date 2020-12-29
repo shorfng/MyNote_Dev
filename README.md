@@ -93,8 +93,8 @@
 
 
 ### 【Java】07_JavaWeb_Framework（开源框架）
-- JavaWeb_7.1_Mybatis3
-- JavaWeb_7.2_Spring5
+- JavaWeb_7.1_Mybatis
+- JavaWeb_7.2_Spring
 
 
 
