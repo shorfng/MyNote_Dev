@@ -1,17 +1,28 @@
 # GitHub仓库代码
 
-| 仓库名称        | 涵盖内容                             |
-| --------------- | ------------------------------------ |
-| MyCode1_JavaDev | 【Java】01_JavaBasics（Java基础）    |
-|                 | 【Java】02_JavaReinforce（Java加强） |
-|                 | 【Java】03_JavaInterface（Java界面） |
+| 仓库名称                          | 涵盖内容                                           |
+| --------------------------------- | -------------------------------------------------- |
+| MyCode_JavaDev                    | 【Java】01_JavaBasics（Java基础）                  |
+|                                   | 【Java】02_JavaReinforce（Java加强）               |
+|                                   | 【Java】03_JavaInterface（Java界面）               |
+| MyCode_JavaWeb_Front              | 【Java】04_JavaWeb_Front（前端）                   |
+| MyCode_JavaWeb_Database           | 【Java】05_JavaWeb_Database（数据库）              |
+| MyCode_JavaWeb_Server             | 【Java】06_JavaWeb_Server（服务器端）              |
+| MyCode_JavaWeb_Framework          | 【Java】07_JavaWeb_Framework（开源框架）           |
+| MyCode_JavaWeb_SourceCodeAnalysis | 【Java】08_JavaWeb_SourceCodeAnalysis（源码分析）  |
+| MyCode_Architecture_Distributed   | 【Java】09_Architecture_Distributed（分布式架构）  |
+| MyCode_Architecture_MicroService  | 【Java】10_Architecture_MicroService（微服务架构） |
+| MyCode_JavaExpert                 | 【Java】11_JavaExpert（高阶）                      |
 
 
 
 # JavaCode 目录
-写在前面：
+- 写在前面
+
+```java
 （1）部分类名/包名采用x_YzYz的方式，而非驼峰命名的方式，目的是为了区分和排序
-（2）JDK 1.8
+（2）项目JDK 1.8
+```
 
 
 
@@ -89,24 +100,31 @@
 
 ### 【Java】08_JavaWeb_SourceCodeAnalysis（源码分析）
 
+- JavaWeb_8.1_Mybatis_src
+- JavaWeb_8.2_Spring_src
+- JavaWeb_8.3_Dubbo_src
+- JavaWeb_8.4_Zookeeper_src
+- JavaWeb_8.4_Zookeeper_src
+- JavaWeb_8.5_Netty_src
+
 
 
 ### 【Java】09_Architecture_Distributed（分布式架构）
 
-- JavaWeb_7.2_Spring5
+- Distributed_9.0_Basic（分布式架构基础）
 
 
 
 ### 【Java】10_Architecture_MicroService（微服务架构）
 
----
-以下目录暂定
-### 7、性能优化
-- JavaWeb_7.1_JVM优化
-- JavaWeb_7.2_Tomcat优化
-- JavaWeb_7.3_MySQL优化
+- MicroService_10.0_Basic（微服务架构基础）
+
+
 
 ---
+
+
+以下目录暂定
 
 ### 8、TeamEfficiency（团队效率）
 ##### 8.1_Build（项目构建）
