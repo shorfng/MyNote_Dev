@@ -66,6 +66,7 @@
 - JavaWeb_4.4_jQuery_OCUpload
 - JavaWeb_4.4_jQuery_ZTree
 - JavaWeb_4.5_BootStrap
+- JavaWeb_4.6_Layui（前端框架）
 
 
 
@@ -93,8 +94,8 @@
 
 
 ### 【Java】07_JavaWeb_Framework（开源框架）
-- JavaWeb_7.1_Mybatis
-- JavaWeb_7.2_Spring
+- JavaWeb_7.1_Mybatis3
+- JavaWeb_7.2_Spring5
 
 
 
