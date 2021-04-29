@@ -1,19 +1,19 @@
 # GitHub仓库代码
 
-| 仓库名称                          | 涵盖内容                                           |
-| --------------------------------- | -------------------------------------------------- |
-| MyCode_JavaDev                    | 【Java】01_JavaBasics（Java基础）                  |
-|                                   | 【Java】02_JavaReinforce（Java加强）               |
-|                                   | 【Java】03_JavaInterface（Java界面）               |
-| MyCode_JavaWeb_Front              | 【Java】04_JavaWeb_Front（前端）                   |
-| MyCode_JavaWeb_Database           | 【Java】05_JavaWeb_Database（数据库）              |
-| MyCode_JavaWeb_Server             | 【Java】06_JavaWeb_Server（服务器端）              |
-| MyCode_JavaWeb_Framework          | 【Java】07_JavaWeb_Framework（开源框架）           |
-| MyCode_JavaWeb_SourceCodeAnalysis | 【Java】08_JavaWeb_SourceCodeAnalysis（源码分析）  |
-| MyCode_Architecture_Distributed   | 【Java】09_Architecture_Distributed（分布式架构）  |
-| MyCode_Architecture_MicroService  | 【Java】10_Architecture_MicroService（微服务架构） |
-| MyCode_JavaExpert                 | 【Java】11_JavaExpert（高阶）                      |
-| MyCode_EfficiencyTools            | 【Java】12_EfficiencyTools（效率工具）             |
+| 仓库名称                                                     | 涵盖内容                                           |
+| ------------------------------------------------------------ | -------------------------------------------------- |
+| [MyCode_JavaDev](https://github.com/shorfng/MyCode_JavaDev)  | 【Java】01_JavaBasics（Java基础）                  |
+|                                                              | 【Java】02_JavaReinforce（Java加强）               |
+|                                                              | 【Java】03_JavaInterface（Java界面）               |
+| [MyCode_JavaWeb_Front](https://github.com/shorfng/MyCode_JavaWeb_Front) | 【Java】04_JavaWeb_Front（前端）                   |
+| [MyCode_JavaWeb_Database](https://github.com/shorfng/MyCode_JavaWeb_Database) | 【Java】05_JavaWeb_Database（数据库）              |
+| [MyCode_JavaWeb_Server](https://github.com/shorfng/MyCode_JavaWeb_Server) | 【Java】06_JavaWeb_Server（服务器端）              |
+| [MyCode_JavaWeb_Framework](https://github.com/shorfng/MyCode_JavaWeb_Framework) | 【Java】07_JavaWeb_Framework（开源框架）           |
+| MyCode_JavaWeb_SourceCodeAnalysis                            | 【Java】08_JavaWeb_SourceCodeAnalysis（源码分析）  |
+| MyCode_Architecture_Distributed                              | 【Java】09_Architecture_Distributed（分布式架构）  |
+| MyCode_Architecture_MicroService                             | 【Java】10_Architecture_MicroService（微服务架构） |
+| MyCode_JavaExpert                                            | 【Java】11_JavaExpert（高阶）                      |
+| MyCode_EfficiencyTools                                       | 【Java】12_EfficiencyTools（效率工具）             |
 
 
 
