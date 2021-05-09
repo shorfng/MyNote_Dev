@@ -94,7 +94,97 @@
 
 
 
-## 1.5 核心配置文件 server.xml 详解
+## 1.5 核心配置文件 conf/server.xml 详解
+
+### （1）Server 根标签
+
+```xml
+<!-- Server 根元素，创建⼀个Server实例 -->
+<Server>
+	<!-- 定义监听器 -->
+	<Listener/>
+	
+	<!-- 定义服务器的全局JNDI资源 -->
+	<GlobalNamingResources/>
+	
+	<!-- 定义⼀个Service服务，⼀个Server标签可以有多个Service服务实例 -->
+	<Service/>
+</Server>
+```
+
+
+
+```xml
+<!--
+ port：关闭服务器的监听端⼝
+ shutdown：关闭服务器的指令字符串
+-->
+<Server port="8005" shutdown="SHUTDOWN">
+	<!-- 以⽇志形式输出服务器 、操作系统、JVM的版本信息 -->
+	<Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
+	
+	<!-- Security listener. Documentation at /docs/config/listeners.html
+	<Listener className="org.apache.catalina.security.SecurityListener" />-->
+
+	<!--APR library loader. Documentation at /docs/apr.html -->
+	<!-- 加载（服务器启动）和 销毁 （服务器停⽌）APR。 如果找不到APR库，则会输出⽇志，并不影响 Tomcat 启动 -->
+	<Listener SSLEngine="on" className="org.apache.catalina.core.AprLifecycleListener"/>
+
+	<!-- Prevent memory leaks due to use of particular java/javax APIs-->
+	<!-- 避免JRE内存泄漏问题 -->
+	<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
+	
+	<!-- 加载（服务器启动） 和 销毁（服务器停⽌） 全局命名服务 -->
+	<Listener className="org.apache.catalina.mbPeans.GlobalResourcesLifecycleListener"/>
+	
+	<!-- 在Context停⽌时重建 Executor 池中的线程， 以避免ThreadLocal 相关的内存泄漏 -->
+	<Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
+	
+	<!-- Global JNDI resources  Documentation at /docs/jndi-resources-howto.html
+	GlobalNamingResources 中定义了全局命名服务
+	-->
+	<GlobalNamingResources>
+		<!-- Editable user database that can also be used by UserDatabaseRealm to authenticate users-->
+		<Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
+	</GlobalNamingResources>
+	
+  <!-- A "Service" is a collection of one or more "Connectors" that share a single "Container" Note: A "Service" is not itself a "Container", so you may not define subcomponents such as "Valves" at this level.Documentation at /docs/config/service.html-->
+	<Service name="Catalina">
+		...
+ 	</Service>
+</Server>
+```
+
+### （2）Service标签
+
+```xml
+<!-- 该标签⽤于创建 Service 实例，默认使⽤ org.apache.catalina.core.StandardService -->
+<!-- 默认情况下，Tomcat 仅指定了Service 的名称， 值为 "Catalina" -->
+<Service name="Catalina">
+	<!-- ⽤于为Service添加⽣命周期监听器 -->
+	<Listener/>
+
+	<!-- ⽤于配置Service 共享线程池 -->
+	<Executor/>
+
+	<!-- ⽤于配置Service 包含的链接器 -->
+	<Connector/>
+
+	<!-- ⽤于配置Service中链接器对应的Servlet 容器引擎 -->
+	<Engine/>
+</Service>
+```
+
+（3）Executor
+
+```xml
+```
+
+
+
+（4）Connector
+
+（5）Engine
 
 
 
@@ -149,31 +239,125 @@
 容器（Container）：负责内部处理，加载和管理 Servlet，以及具体处理 Request 请求
 ```
 
+Tomcat是⼀个由⼀系列可配置（conf/server.xml）的组件构成的Web容器，⽽Catalina是Tomcat的servlet容器，是 Tomcat 的核心 ， 其他模块都是为Catalina 提供⽀撑的。 ⽐如 ： 通过 Coyote 模块提供链接通信，Jasper 模块提供 JSP 引擎，Naming 提供JNDI 服务，Juli 提供⽇志服务。
+
+![image-20210505193118906](image/image-20210505193118906.png)
+
+
+
 
 
 ## 2.4 Tomcat 连接器组件 - Coyote
 
 ### （1）**Coyote** 简介
 
+```
+Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通过Coyote与服务器建⽴连接、发送请求并接受响应
+
+（1）Coyote 封装了底层的⽹络通信（Socket 请求及响应处理）
+（2）Coyote 使Catalina 容器（容器组件）与具体的请求协议及IO操作⽅式完全解耦
+（3）Coyote 将Socket 输⼊转换封装为 Request 对象，进⼀步封装后交由Catalina 容器进⾏处理，处理请求完成后, Catalina 通过Coyote 提供的Response 对象将结果写⼊输出流
+（4）Coyote 负责的是具体协议（应⽤层）和IO（传输层）相关内容
+```
+
+![image-20210505151135169](image/image-20210505151135169.png)
+
+
+
 ### （2）Coyote 支持的 IO 模型
 
-BIO，同步阻塞I/O
+- 传输层 IO模型
 
-NIO，同步非阻塞I/O
+| IO模型 | 描述                                                         |
+| ------ | ------------------------------------------------------------ |
+| BIO    | 同步阻塞I/O（Tomcat 8.0之前默认采用）                        |
+| NIO    | 同步非阻塞I/O，采用Java NIO类库实现（默认的IO模型）          |
+| NIO2   | 异步I/O，采用 JDK7 最新 NIO2 类库实现                        |
+| APR    | 采用Apache 可移植运行库实现，是C/C++编写的本地库（需要单独安装APR库） |
 
-NIO2，异步I/O
+
 
 ### （3）Coyote 支持的协议
+
+- 应用层协议
+
+| 应用层协议 | 描述                                                         |
+| ---------- | ------------------------------------------------------------ |
+| HTTP/1.1   | 大部分Web应用采用的访问协议（Tomcat默认）                    |
+| AJP        | 用于和WX集成以实现对静态资源的优化以及集群部署（当前支持AJP/1.3） |
+| HTTP/2.0   | 大幅度提升了Web性能（Tomcat 8.5 和Tomcat 9.0版本之后支持）   |
 
 
 
 ### （4）Coyote的内部组件及流程
 
+![image-20210505152306592](image/image-20210505152306592.png)
 
+| **组件**        | 作用描述                                                     |
+| --------------- | ------------------------------------------------------------ |
+| EndPoint        | EndPoint 是 Coyote 通信端点，即通信监听的接⼝，是具体Socket接收和发送处理器，是对传输层的抽象，因此EndPoint⽤来实现TCP/IP协议的 |
+| Processor       | Processor 是Coyote 协议处理接⼝ ，如果说EndPoint是⽤来实现TCP/IP协议的，那么Processor⽤来实现HTTP协议，Processor接收来⾃EndPoint的Socket，读取字节流解析成Tomcat Request和Response对象，并通过Adapter将其提交到容器处理，Processor是对应⽤层协议的抽象 |
+| ProtocolHandler | Coyote 协议接⼝， 通过Endpoint 和 Processor ， 实现针对具体协议的处理能⼒。Tomcat 按照协议和I/O 提供了6个实现类 ： AjpNioProtocol ，AjpAprProtocol， AjpNio2Protocol ， Http11NioProtocol ，Http11Nio2Protocol ，Http11AprProtocol |
+| Adapter         | 由于协议不同，客户端发过来的请求信息也不尽相同，Tomcat定义了⾃⼰的Request类来封装这些请求信息。ProtocolHandler接⼝负责解析请求并⽣成Tomcat Request类。但是这个Request对象不是标准的ServletRequest，不能⽤Tomcat Request作为参数来调⽤容器。Tomcat设计者的解决⽅案是引⼊CoyoteAdapter，这是适配器模式的经典运⽤，连接器调⽤CoyoteAdapter的Sevice⽅法，传⼊的是Tomcat Request对象，CoyoteAdapter负责将Tomcat Request转成ServletRequest，再调⽤容器 |
 
 
 
 ## 2.5 Tomcat Servlet 容器组件 -  **Catalina**
+
+### （1）Tomcat/Catalina实例
+
+- 整个Tomcat就是⼀个Catalina实例，Tomcat 启动的时候会初始化这个实例，Catalina实例通过加载server.xml完成其他实例的创建，创建并管理⼀个Server，Server创建并管理多个服务，每个服务又可以有多个Connector和⼀个Container
+
+```
+⼀个Catalina实例（容器）
+		⼀个 Server实例（容器）
+				多个Service实例（容器）
+        		每⼀个Service实例下可以有多个Connector实例和⼀个Container实例
+```
+
+
+
+![image-20210505193346602](image/image-20210505193346602.png)
+
+
+
+```
+Catalina
+- 负责解析 Tomcat 的配置⽂件（server.xml） , 以此来创建服务器 Server 组件并进行管理
+
+Server
+- 服务器表示整个 Catalina servlet 容器以及其它组件，负责组装并启动 servlet 引擎,Tomcat 连接器。Server 通过实现 Lifecycle 接口，提供了⼀种优雅的启动和关闭整个系统的⽅式
+
+Service（多个）
+- 服务是 Server 内部的组件，⼀个 Server 包含多个 Service。它将若干个 Connector 组件绑定到⼀个 Container
+
+Container（一个）
+- 容器，负责处理用户的 servlet 请求，并返回对象给 web 用户的模块
+```
+
+
+
+### （2）Container 组件结构
+
+```
+Engine（一个）
+- 表示整个 Catalina 的 Servlet 引擎，⽤来管理多个虚拟站点，⼀个Service最多只能有⼀个Engine，但是⼀个引擎可包含多个Host
+
+Host（多个）
+- 代表⼀个虚拟主机，或者说⼀个站点，可以给Tomcat配置多个虚拟主机地址，⽽⼀个虚拟主机下可包含多个Context
+
+Context（多个）
+- 表示⼀个Web应⽤程序， ⼀个Web应⽤可包含多个Wrapper
+
+Wrapper（多个）
+- 表示⼀个Servlet，Wrapper 作为容器中的最底层，不能包含⼦容器
+
+上述组件的配置其实就体现在conf/server.xml中。
+```
+
+
+
+![image-20210505193816464](image/image-20210505193816464.png)
 
 
 
