@@ -1,4 +1,4 @@
-> 当前位置：【Java】12_ 团队效率  -> 12.8_部署容器 - > 01_ApacheTomcat
+> 【Java】12_EfficiencyTools（效率工具）-> 12.8_DeployContainer（部署容器）-> 01_ApacheTomcat
 
 
 
@@ -175,18 +175,106 @@
 </Service>
 ```
 
-（3）Executor
+### （3）Executor
 
 ```xml
+<!--
+ 默认情况下，Service 并未添加共享线程池配置。
+ 如果想添加⼀个线程池， 可以在<Service>下添加如下配置：
+ name：线程池名称，⽤于 Connector中指定
+ namePrefix：所创建的每个线程的名称前缀，⼀个单独的线程名称为 namePrefix+threadNumber
+ maxThreads：池中最⼤线程数
+ minSpareThreads：活跃线程数，也就是核⼼池线程数，这些线程不会被销毁，会⼀直存在
+ maxIdleTime：线程空闲时间，超过该时间后，空闲线程会被销毁，默认值为6000毫秒（1分钟）
+ maxQueueSize：在被执⾏前最⼤线程排队数⽬，默认为Int的最⼤值，也就是⼴义的⽆限。除⾮特殊情况，这个值 不需要更改，否则会有请求不会被处理的情况发⽣
+ prestartminSpareThreads：启动线程池时是否启动 minSpareThreads部分线程。默认值为false，即不启动
+ threadPriority：线程池中线程优先级，默认值为5，值从1到10
+ className：线程池实现类，未指定情况下，默认实现类为 org.apache.catalina.core.StandardThreadExecutor，如果想使⽤⾃定义线程池⾸先需要实现 org.apache.catalina.Executor 接⼝
+-->
+<Executor 
+    className="org.apache.catalina.core.StandardThreadExecutor" 
+    maxIdleTime="60000" 
+    maxQueueSize="Integer.MAX_VALUE" 
+    maxThreads="200" 
+    minSpareThreads="100" 
+    name="commonThreadPool" 
+    namePrefix="thread-exec-" 
+    prestartminSpareThreads="false" 
+    threadPriority="5"
+    />
 ```
 
+### （4）Connector
 
+```xml
+<!--
+port：端⼝号，Connector ⽤于创建服务端 Socket 并进⾏监听，以等待客户端请求链接，如果该属性设置为0， Tomcat将会随机选择⼀个可⽤的端⼝号给当前 Connector 使⽤
 
-（4）Connector
+protocol：当前 Connector ⽀持的访问协议。 默认为 HTTP/1.1，并采⽤⾃动切换机制选择⼀个基于 Java NIO 的链接器或者基于本地APR的链接器（根据本地是否含有Tomcat的本地库判定）
 
-（5）Engine
+connectionTimeOut:Connector 接收链接后的等待超时时间，单位为毫秒，-1 表示不超时
 
+redirectPort：当前 Connector 不⽀持SSL请求，接收到了⼀个请求，并且也符合 security-constraint 约束，需要SSL传输，Catalina ⾃动将请求重定向到指定的端⼝。
 
+executor：指定共享线程池的名称， 也可以通过 maxThreads、minSpareThreads 等属性配置内部线程池
+
+URIEncoding:⽤于指定编码URI的字符编码，Tomcat8.x版本默认的编码为 UTF-8 , Tomcat7.x版本默认为ISO-
+8859-1
+-->
+<!-- org.apache.coyote.http11.Http11NioProtocol，⾮阻塞式 Java NIO 链接器 -->
+<Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"redirectPort="8443" />
+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+
+<!-- 共享线程池 -->
+<Connector 
+    URIEncoding="UTF-8" 
+    acceptCount="1000" 
+    compression="on" 
+    compressionMinSize="2048" 
+    connectionTimeout="20000" 
+    disableUploadTimeout="true" 
+    executor="commonThreadPool" 
+    maxConnections="1000" 
+    maxThreads="1000" 
+    minSpareThreads="100" 
+    port="8080" 
+    protocol="HTTP/1.1" 
+    redirectPort="8443"
+    />
+```
+
+### （5）Engine（表示 Servlet 引擎）
+
+```xml
+<!--
+name： ⽤于指定Engine 的名称，默认为 Catalina
+defaultHost：默认使⽤的虚拟主机名称，当客户端请求指向的主机⽆效时，将交由默认的虚拟主机处理， 默认为 localhost
+-->
+<Engine defaultHost="localhost" name="Catalina">
+    ...
+</Engine>
+```
+
+### （6）Host
+
+```xml
+<!-- ⽤于配置⼀个虚拟主机 -->
+<Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
+    ...
+</Host>
+```
+
+### （7）Context
+
+```xml
+<Host appBase="webapps" autoDeploy="true" name="www.abc.com" unpackWARs="true">
+    <!-- ⽤于配置⼀个Web应⽤ -->
+    <!-- docBase：Web应⽤⽬录或者War包的部署路径，可以是绝对路径，也可以是相对于 Host appBase 的相对路径 -->
+    <!-- path：Web应⽤的Context 路径，如果我们Host名为localhost， 则该web应⽤访问的根路径为： http://localhost:8080/web_demo-->
+    <Context docBase="/Users/yingdian/web_demo" path="/web3"/>
+    <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
+</Host>
+```
 
 
 
@@ -302,7 +390,7 @@ Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通
 
 
 
-## 2.5 Tomcat Servlet 容器组件 -  **Catalina**
+## 2.5 Tomcat Servlet 容器组件 -  Catalina
 
 ### （1）Tomcat/Catalina实例
 
@@ -366,6 +454,153 @@ Wrapper（多个）
 
 
 # 4、Tomcat 源码分析
+
+## 4.1 下载源码
+
+地址：https://tomcat.apache.org/
+
+![image-20210510154933813](image/image-20210510154933813.png)
+
+## 4.2 导入IDEA步骤
+
+### （1）解压 tar.gz 压缩包
+
+```
+- 得到目录 apache-tomcat-8.5.50-src
+```
+
+### （2）创建 **source**文件夹（名字自定义）
+
+```
+- 在 apache-tomcat-8.5.50-src 根目录录中创建 source 文件夹
+- 将 conf、webapps 目录移动到刚刚创建 source 文件夹
+```
+
+### （3）创建 pom.xml 文件（根目录）
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.apache.tomcat</groupId>
+    <artifactId>apache-tomcat-8.5.50-src</artifactId>
+    <name>Tomcat8.5</name>
+    <version>8.5</version>
+    
+    <build>
+        <!-- 指定源目录 -->
+        <finalName>Tomcat8.5</finalName>
+        <sourceDirectory>java</sourceDirectory>
+        
+        <resources>
+            <resource>
+                <directory>java</directory>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <!--引入编译插件-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    
+    <!-- tomcat 依赖的基础包 -->
+    <dependencies>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>3.4</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>wsdl4j</groupId>
+            <artifactId>wsdl4j</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.xml</groupId>
+            <artifactId>jaxrpc</artifactId>
+            <version>1.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.eclipse.jdt.core.compiler</groupId>
+            <artifactId>ecj</artifactId>
+            <version>4.5.1</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>javax.xml.soap-api</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+    </dependencies>
+</project>
+```
+
+### （4）使用 IDEA 打开项目
+
+### （5）启动 Bootstrap.java 类的 main 函数
+
+```
+文件路径：java/org/apache/catalina/startup/Bootstrap.java
+```
+
+### （4）配置VM选项，加入source的配置
+
+```properties
+-Dcatalina.home=D:\SourceCode-TD\apache-tomcat-8.5.50-src\source
+-Dcatalina.base=D:\SourceCode-TD\apache-tomcat-8.5.50-src\source
+-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+-Djava.util.logging.config.file=D:\SourceCode-TD\apache-tomcat-8.5.50-src\source\conf\logging.properties
+```
+
+![image-20210510160357681](image/image-20210510160357681.png)
+
+### （5）初始化 Jsp 引擎
+
+- org/apache/catalina/startup/ContextConfig.java
+- 解决访问 http://localhost:8080/ 报错：org.apache.jasper.JasperException: Unable to compile class for JSP
+
+```java
+// 初始化jsp解析引擎-jasper
+context.addServletContainerInitializer(new JasperInitializer(), null);
+```
+
+
+
+### 问题
+
+#### （1）报错：程序包 sun.rmi.registry 已在模块 java.rmi 中声明, 但该模块未将它导出到未命名模块
+
+```
+解决方案：根据idea提示修复即可
+```
+
+
+
+## 4.3 
 
 
 
