@@ -1,6 +1,4 @@
-> 当前位置：【Java】08_团队效率  -> 8.2 源码管理 -> 02_Git和GitLab
-
-
+> 当前位置：【Java】12_EfficiencyTools（效率工具） -> 12.3_VcsTools（源码管理工具） -> 01_Git和GitLab
 
 
 

@@ -1,6 +1,6 @@
->当前位置：【Java】13_ 团队效率   -> 13.1_开发工具  ->  01_IDEA安装和配置
+>当前位置：【Java】12_EfficiencyTools（效率工具） -> 12.1_DevTools（开发工具） ->  01_IDEA安装和配置
 
-
+[toc]
 
 - 本文截图为IDEA版本为2020.3，使用了官方中文插件
 
@@ -422,6 +422,10 @@ Maximum heep… 最大堆栈
 - idea官方中文汉化包
 - 需要2020.1版本以上才能在插件库中搜到
 ```
+
+
+
+![简单演示 功能远不止于此](image/6b0879cc869a45b4b5565f370c88741a~tplv-k3u1fbpfcp-zoom-1.image)
 
 
 
@@ -859,6 +863,12 @@ if ($var1$ != null && $var1$.length() != 0) {
 ```
 
 
+
+
+
+> 参考资料
+
+https://juejin.cn/post/6960478730300948494
 
 
 

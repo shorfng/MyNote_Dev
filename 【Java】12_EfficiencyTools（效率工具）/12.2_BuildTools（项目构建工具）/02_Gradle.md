@@ -1,4 +1,4 @@
-> 当前位置：【03】开发工具  -> 3.5_Gradle安装和配置
+> 当前位置：【Java】12_EfficiencyTools（效率工具） -> 12.2_BuildTools（项目构建工具）  -> 02_Gradle安装和配置
 
 
 
