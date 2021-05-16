@@ -96,7 +96,7 @@
 
 ## 1.5 核心配置文件 conf/server.xml 详解
 
-### （1）Server 根标签
+### （1）节点框架
 
 ```xml
 <!-- Server 根元素，创建⼀个Server实例 -->
@@ -108,17 +108,39 @@
 	<GlobalNamingResources/>
 	
 	<!-- 定义⼀个Service服务，⼀个Server标签可以有多个Service服务实例 -->
-	<Service/>
+	<Service>
+    <!-- ⽤于配置Service 共享线程池 -->
+    <Executor/>
+
+    <!-- ⽤于配置Service 包含的链接器 -->
+    <Connector/>
+
+    <!-- ⽤于配置Service中链接器对应的Servlet 容器引擎 -->
+    <Engine>
+      <!-- ⽤于配置⼀个虚拟主机（可多个）-->
+      <Host></Host>
+      <Host></Host>
+      
+			<Host>
+        <!-- ⽤于配置⼀个Web应⽤（可多个）-->
+      	<Context></Context>
+        <Context></Context>
+      </Host>
+      
+    </Engine>
+  </Service>
 </Server>
 ```
 
 
 
+### （2）详细解析
+
 ```xml
-<!--
- port：关闭服务器的监听端⼝
- shutdown：关闭服务器的指令字符串
--->
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- port：关闭服务器的监听端⼝ -->
+<!-- shutdown：关闭服务器的指令字符串 -->
 <Server port="8005" shutdown="SHUTDOWN">
 	<!-- 以⽇志形式输出服务器 、操作系统、JVM的版本信息 -->
 	<Listener className="org.apache.catalina.startup.VersionLoggerListener"/>
@@ -126,154 +148,168 @@
 	<!-- Security listener. Documentation at /docs/config/listeners.html
 	<Listener className="org.apache.catalina.security.SecurityListener" />-->
 
-	<!--APR library loader. Documentation at /docs/apr.html -->
-	<!-- 加载（服务器启动）和 销毁 （服务器停⽌）APR。 如果找不到APR库，则会输出⽇志，并不影响 Tomcat 启动 -->
-	<Listener SSLEngine="on" className="org.apache.catalina.core.AprLifecycleListener"/>
 
-	<!-- Prevent memory leaks due to use of particular java/javax APIs-->
+	<!-- 加载（服务器启动）和 销毁 （服务器停⽌）APR。 如果找不到APR库，则会输出⽇志，并不影响 Tomcat 启动 -->
+	<!-- APR library loader. Documentation at /docs/apr.html -->
+	<Listener SSLEngine="on" className="org.apache.catalina.core.AprLifecycleListener"/>
+	
 	<!-- 避免JRE内存泄漏问题 -->
+	<!-- Prevent memory leaks due to use of particular java/javax APIs-->
 	<Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener"/>
-	
-	<!-- 加载（服务器启动） 和 销毁（服务器停⽌） 全局命名服务 -->
-	<Listener className="org.apache.catalina.mbPeans.GlobalResourcesLifecycleListener"/>
-	
-	<!-- 在Context停⽌时重建 Executor 池中的线程， 以避免ThreadLocal 相关的内存泄漏 -->
+
+	<!-- 加载（服务器启动） 和 销毁（服务器停⽌）全局命名服务 -->
+	<Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener"/>
+
+	<!-- 在Context停⽌时重建 Executor 池中的线程，以避免ThreadLocal 相关的内存泄漏 -->
 	<Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener"/>
-	
-	<!-- Global JNDI resources  Documentation at /docs/jndi-resources-howto.html
-	GlobalNamingResources 中定义了全局命名服务
-	-->
+
+	<!-- GlobalNamingResources 中定义了全局命名服务 -->
+	<!-- Global JNDI resources Documentation at /docs/jndi-resources-howto.html -->
 	<GlobalNamingResources>
 		<!-- Editable user database that can also be used by UserDatabaseRealm to authenticate users-->
-		<Resource auth="Container" description="User database that can be updated and saved" factory="org.apache.catalina.users.MemoryUserDatabaseFactory" name="UserDatabase" pathname="conf/tomcat-users.xml" type="org.apache.catalina.UserDatabase"/>
+		<Resource 
+			auth="Container" 
+			description="User database that can be updated and saved" 
+			factory="org.apache.catalina.users.MemoryUserDatabaseFactory" 
+			name="UserDatabase" 
+			pathname="conf/tomcat-users.xml" 
+			type="org.apache.catalina.UserDatabase"/>
 	</GlobalNamingResources>
-	
-  <!-- A "Service" is a collection of one or more "Connectors" that share a single "Container" Note: A "Service" is not itself a "Container", so you may not define subcomponents such as "Valves" at this level.Documentation at /docs/config/service.html-->
+
+	<!-- 定义⼀个Service服务，⼀个Server标签可以有多个Service服务实例 -->
+	<!-- Service 标签⽤于创建 Service 实例，默认使⽤ org.apache.catalina.core.StandardService，默认值为 "Catalina" -->
 	<Service name="Catalina">
-		...
- 	</Service>
+		<!-- ⽤于配置Service 共享线程池 -->
+		<!-- 默认情况下，Service 并未添加共享线程池配置，如果想添加⼀个线程池，可以在<Service>下添加如下配置：
+
+			name：线程池名称，⽤于 Connector中指定
+
+			namePrefix：所创建的每个线程的名称前缀，⼀个单独的线程名称为 namePrefix+threadNumber
+
+			maxThreads：池中最⼤线程数
+
+			minSpareThreads：活跃线程数，也就是核⼼池线程数，这些线程不会被销毁，会⼀直存在
+
+			maxIdleTime：线程空闲时间，超过该时间后，空闲线程会被销毁，默认值为6000毫秒（1分钟）
+
+			maxQueueSize：在被执⾏前最⼤线程排队数⽬，默认为Int的最⼤值，也就是⼴义的⽆限。除⾮特殊情况，这个值 不需要更改，否则会有请求不会被处理的情况发⽣
+
+			prestartminSpareThreads：启动线程池时是否启动 minSpareThreads部分线程。默认值为false，即不启动
+
+			threadPriority：线程池中线程优先级，默认值为5，值从1到10
+
+			className：线程池实现类，未指定情况下，默认实现类为org.apache.catalina.core.StandardThreadExecutor，如果想使⽤⾃定义线程池⾸先需要实现 org.apache.catalina.Executor 接⼝
+		-->
+		<Executor 
+			name="commonThreadPool" 
+		    className="org.apache.catalina.core.StandardThreadExecutor" 
+		    maxIdleTime="60000" 
+		    maxQueueSize="Integer.MAX_VALUE" 
+		    maxThreads="200" 
+		    minSpareThreads="100" 
+		    namePrefix="thread-exec-" 
+		    prestartminSpareThreads="false" 
+		    threadPriority="5"/>
+
+		<!-- Connector ⽤于配置Service 包含的链接器 -->
+		<!--
+		port：端⼝号，Connector ⽤于创建服务端 Socket 并进⾏监听，以等待客户端请求链接，如果该属性设置为0， Tomcat将会随机选择⼀个可⽤的端⼝号给当前 Connector 使⽤
+
+		protocol：当前 Connector ⽀持的访问协议。 默认为 HTTP/1.1，并采⽤⾃动切换机制选择⼀个基于 Java NIO 的链接器或者基于本地APR的链接器（根据本地是否含有Tomcat的本地库判定）
+
+		connectionTimeOut:Connector 接收链接后的等待超时时间，单位为毫秒，-1 表示不超时
+
+		redirectPort：当前 Connector 不⽀持SSL请求，接收到了⼀个请求，并且也符合 security-constraint 约束，需要SSL传输，Catalina ⾃动将请求重定向到指定的端⼝。
+
+		executor：指定共享线程池的名称， 也可以通过 maxThreads、minSpareThreads 等属性配置内部线程池
+
+		URIEncoding:⽤于指定编码URI的字符编码，Tomcat8.x版本默认的编码为 UTF-8 , Tomcat7.x版本默认为ISO-8859-1
+		-->
+		<Connector 
+			executor="commonThreadPool" 
+		    URIEncoding="UTF-8" 
+		    acceptCount="1000" 
+		    compression="on" 
+		    compressionMinSize="2048" 
+		    connectionTimeout="20000" 
+		    disableUploadTimeout="true" 
+		    maxConnections="1000" 
+		    maxThreads="1000" 
+		    minSpareThreads="100" 
+		    port="8080" 
+		    protocol="HTTP/1.1" 
+		    redirectPort="8443"
+		    />
+
+		<Connector port="8080" protocol="HTTP/1.1" redirectPort="8443" connectionTimeout="20000"/>
+		<Connector port="8009" protocol="AJP/1.3" redirectPort="8443"/>
+
+		<!-- ⾮阻塞式 Java NIO 链接器：org.apache.coyote.http11.Http11NioProtocol -->
+		<!-- <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" maxThreads="150" SSLEnabled="true">
+			<SSLHostConfig>
+				<Certificate certificateKeystoreFile="conf/localhost-rsa.jks" type="RSA" />
+			</SSLHostConfig>
+		</Connector> -->
+
+
+     	<!-- <Connector port="8443" protocol="org.apache.coyote.http11.Http11AprProtocol" maxThreads="150" SSLEnabled="true" >
+        	<UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+        	<SSLHostConfig>
+            	<Certificate 
+            		certificateKeyFile="conf/localhost-rsa-key.pem"
+            		certificateFile="conf/localhost-rsa-cert.pem"
+            		certificateChainFile="conf/localhost-rsa-chain.pem"
+            		type="RSA" />
+        	</SSLHostConfig>
+        </Connector> -->
+
+    	<!-- Engine 表示 Servlet 引擎 -->
+        <!-- name： ⽤于指定Engine 的名称，默认为 Catalina -->
+        <!-- defaultHost：默认使⽤的虚拟主机名称，当客户端请求指向的主机⽆效时，将交由默认的虚拟主机处理， 默认为 localhost -->
+		<Engine defaultHost="localhost" name="Catalina">
+			<!--<Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>-->
+
+			<Realm className="org.apache.catalina.realm.LockOutRealm">
+				<Realm className="org.apache.catalina.realm.UserDatabaseRealm" resourceName="UserDatabase"/>
+			</Realm>
+			
+			<!-- ⽤于配置⼀个虚拟主机 -->
+			<Host appBase="webapps" autoDeploy="true" name="localhost" unpackWARs="true">
+
+				<!--<Valve className="org.apache.catalina.authenticator.SingleSignOn" /> -->
+
+				<!-- ⽤于配置⼀个Web应⽤ -->
+    			<!-- docBase：Web应⽤⽬录或者War包的部署路径，可以是绝对路径，也可以是相对于 Host appBase 的相对路径 -->
+    			<!-- path：Web应⽤的Context 路径，如果我们Host名为localhost， 则该web应⽤访问的根路径为： http://localhost:8080/web3 -->
+      			<Context docBase="/Users/web_demo" path="/web3"/>
+
+				<Valve 
+					className="org.apache.catalina.valves.AccessLogValve" 
+					directory="logs" 
+					pattern="%h %l %u %t &quot;%r&quot; %s %b" 
+					prefix="localhost_access_log" 
+					suffix=".txt"/>
+			</Host>
+
+			<Host appBase="webapps123" autoDeploy="true" name="localhost123" unpackWARs="true">
+
+				<!--<Valve className="org.apache.catalina.authenticator.SingleSignOn" /> -->
+
+				<!-- ⽤于配置⼀个Web应⽤ -->
+    			<!-- docBase：Web应⽤⽬录或者War包的部署路径，可以是绝对路径，也可以是相对于 Host appBase 的相对路径 -->
+    			<!-- path：Web应⽤的Context 路径，如果我们Host名为localhost， 则该web应⽤访问的根路径为： http://localhost:8080/web3 -->
+      			<Context docBase="/Users/web_demo" path="/web3"/>
+
+				<Valve 
+					className="org.apache.catalina.valves.AccessLogValve" 
+					directory="logs" 
+					pattern="%h %l %u %t &quot;%r&quot; %s %b" 
+					prefix="localhost_access_log" 
+					suffix=".txt"/>
+			</Host>
+		</Engine>
+	</Service>
 </Server>
-```
-
-### （2）Service标签
-
-```xml
-<!-- 该标签⽤于创建 Service 实例，默认使⽤ org.apache.catalina.core.StandardService -->
-<!-- 默认情况下，Tomcat 仅指定了Service 的名称， 值为 "Catalina" -->
-<Service name="Catalina">
-	<!-- ⽤于为Service添加⽣命周期监听器 -->
-	<Listener/>
-
-	<!-- ⽤于配置Service 共享线程池 -->
-	<Executor/>
-
-	<!-- ⽤于配置Service 包含的链接器 -->
-	<Connector/>
-
-	<!-- ⽤于配置Service中链接器对应的Servlet 容器引擎 -->
-	<Engine/>
-</Service>
-```
-
-### （3）Executor
-
-```xml
-<!--
- 默认情况下，Service 并未添加共享线程池配置。
- 如果想添加⼀个线程池， 可以在<Service>下添加如下配置：
- name：线程池名称，⽤于 Connector中指定
- namePrefix：所创建的每个线程的名称前缀，⼀个单独的线程名称为 namePrefix+threadNumber
- maxThreads：池中最⼤线程数
- minSpareThreads：活跃线程数，也就是核⼼池线程数，这些线程不会被销毁，会⼀直存在
- maxIdleTime：线程空闲时间，超过该时间后，空闲线程会被销毁，默认值为6000毫秒（1分钟）
- maxQueueSize：在被执⾏前最⼤线程排队数⽬，默认为Int的最⼤值，也就是⼴义的⽆限。除⾮特殊情况，这个值 不需要更改，否则会有请求不会被处理的情况发⽣
- prestartminSpareThreads：启动线程池时是否启动 minSpareThreads部分线程。默认值为false，即不启动
- threadPriority：线程池中线程优先级，默认值为5，值从1到10
- className：线程池实现类，未指定情况下，默认实现类为 org.apache.catalina.core.StandardThreadExecutor，如果想使⽤⾃定义线程池⾸先需要实现 org.apache.catalina.Executor 接⼝
--->
-<Executor 
-    className="org.apache.catalina.core.StandardThreadExecutor" 
-    maxIdleTime="60000" 
-    maxQueueSize="Integer.MAX_VALUE" 
-    maxThreads="200" 
-    minSpareThreads="100" 
-    name="commonThreadPool" 
-    namePrefix="thread-exec-" 
-    prestartminSpareThreads="false" 
-    threadPriority="5"
-    />
-```
-
-### （4）Connector
-
-```xml
-<!--
-port：端⼝号，Connector ⽤于创建服务端 Socket 并进⾏监听，以等待客户端请求链接，如果该属性设置为0， Tomcat将会随机选择⼀个可⽤的端⼝号给当前 Connector 使⽤
-
-protocol：当前 Connector ⽀持的访问协议。 默认为 HTTP/1.1，并采⽤⾃动切换机制选择⼀个基于 Java NIO 的链接器或者基于本地APR的链接器（根据本地是否含有Tomcat的本地库判定）
-
-connectionTimeOut:Connector 接收链接后的等待超时时间，单位为毫秒，-1 表示不超时
-
-redirectPort：当前 Connector 不⽀持SSL请求，接收到了⼀个请求，并且也符合 security-constraint 约束，需要SSL传输，Catalina ⾃动将请求重定向到指定的端⼝。
-
-executor：指定共享线程池的名称， 也可以通过 maxThreads、minSpareThreads 等属性配置内部线程池
-
-URIEncoding:⽤于指定编码URI的字符编码，Tomcat8.x版本默认的编码为 UTF-8 , Tomcat7.x版本默认为ISO-
-8859-1
--->
-<!-- org.apache.coyote.http11.Http11NioProtocol，⾮阻塞式 Java NIO 链接器 -->
-<Connector port="8080" protocol="HTTP/1.1" connectionTimeout="20000"redirectPort="8443" />
-<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
-
-<!-- 共享线程池 -->
-<Connector 
-    URIEncoding="UTF-8" 
-    acceptCount="1000" 
-    compression="on" 
-    compressionMinSize="2048" 
-    connectionTimeout="20000" 
-    disableUploadTimeout="true" 
-    executor="commonThreadPool" 
-    maxConnections="1000" 
-    maxThreads="1000" 
-    minSpareThreads="100" 
-    port="8080" 
-    protocol="HTTP/1.1" 
-    redirectPort="8443"
-    />
-```
-
-### （5）Engine（表示 Servlet 引擎）
-
-```xml
-<!--
-name： ⽤于指定Engine 的名称，默认为 Catalina
-defaultHost：默认使⽤的虚拟主机名称，当客户端请求指向的主机⽆效时，将交由默认的虚拟主机处理， 默认为 localhost
--->
-<Engine defaultHost="localhost" name="Catalina">
-    ...
-</Engine>
-```
-
-### （6）Host
-
-```xml
-<!-- ⽤于配置⼀个虚拟主机 -->
-<Host name="localhost" appBase="webapps" unpackWARs="true" autoDeploy="true">
-    ...
-</Host>
-```
-
-### （7）Context
-
-```xml
-<Host appBase="webapps" autoDeploy="true" name="www.abc.com" unpackWARs="true">
-    <!-- ⽤于配置⼀个Web应⽤ -->
-    <!-- docBase：Web应⽤⽬录或者War包的部署路径，可以是绝对路径，也可以是相对于 Host appBase 的相对路径 -->
-    <!-- path：Web应⽤的Context 路径，如果我们Host名为localhost， 则该web应⽤访问的根路径为： http://localhost:8080/web_demo-->
-    <Context docBase="/Users/yingdian/web_demo" path="/web3"/>
-    <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
-</Host>
 ```
 
 
@@ -605,6 +641,8 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 
 # 5、Tomcat 类加载机制
+
+
 
 
 
