@@ -642,6 +642,24 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 # 5、Tomcat 类加载机制
 
+## 5.1 Java类库存放目录
+
+```
+- 放置在 /common 目录中，类库可被Tomcat和所有的Web应用程序共同使用
+- 放置在 /server 目录中，类库可被Tomcat使用，对所有的Web应用程序都不可见
+- 放置在 /shared 目录中，类库可被所有的Web应用程序共同使用，但对Tomcat自己不可见
+- 放置在 /WebApp/WEB-INF 目录中，类库仅仅可以被该Web应用程序使用，对Tomcat和其他Web应用程序都不可见
+```
+
+## 5.2 Tomcat 类加载架构
+
+```
+- 为了支持上述目录结构，并对目录里面的类库进行加载和隔离，Tomcat自定义了多个类加载器
+- 这些类加载器按照经典的双亲委派模型来实现，如下图
+```
+
+![image-20210514090052106](image/image-20210514090052106.png)
+
 
 
 
@@ -683,8 +701,23 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 
 
+# 7、问题报错
+
+## 7.1 Tomcat8.5.x, js中文乱码
+
+- 解决方案
+
+```java
+（1）修改 tomcat\bin\catalina.bat 
+set "JAVA_OPTS=%JAVA_OPTS% %JSSE_OPTS%  -Dfile.encoding=UTF-8"
+    
+（2）Tomcat重启, 清除浏览器缓存
+```
 
 
 
+
+
+> 参考资料
 
 https://blog.csdn.net/qq_41517071/article/details/82181003
