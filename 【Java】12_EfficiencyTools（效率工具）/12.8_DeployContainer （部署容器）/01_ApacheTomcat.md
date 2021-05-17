@@ -640,7 +640,7 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 
 
-## 4.3 
+## 4.3 源码解析
 
 
 
@@ -666,44 +666,205 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 ![image-20210514090052106](image/image-20210514090052106.png)
 
+```
+- 启动类加载器：作用不变
+- 扩展类加载器：作用不变
+- 系统类加载器：正常情况下加载的是 CLASSPATH 下的类，但是 Tomcat 的启动脚本并未使用，而是加载tomcat启动的类，如bootstrap.jar，通常在catalina.bat或者catalina.sh中指定（位于CATALINA_HOME/bin下）
+- Common ClassLoader：通用类加载器加载 Tomcat 使用以及应用通用的一些类（位于CATALINA_HOME/lib下）
+- Catalina ClassLoader：用于加载服务器内部可用类，这些类应用程序不能访问
+- Shared ClassLoader：用于加载应用程序共享类，这些类服务器不会依赖
+- Webapp ClassLoader：每个应用程序都会有一个独一无二的 Webapp ClassLoader，用来加载应用程序 /WEB-INF/classes 和 /WEB-INF/lib 下的类
 
+tomcat 8.5 默认改变了严格的双亲委派机制
+- 先从 Bootstrap Classloader加载指定的类
+- 如果未加载到，则从 /WEB-INF/classes加载
+- 如果未加载到，则从 /WEB-INF/lib/*.jar 加载
+- 如果未加载到，则依次从 System、Common、Shared 加载（在这最后一步，遵从双亲委派机制）
+```
 
 
 
 # 第六章 Tomcat 性能优化
 
-##### 优化思路 1：核心组件
+## 0、系统性能的衡量指标
 
-##### 优化思路 2：非核心组件 
+- 响应时间：执行某个操作的耗时
+- 吞吐量：系统在给定时间内能够支持的事务数量
 
-##### 优化思路 3：web.xml 
-
-##### 优化思路 4：JVM层面
-
-
-
-##### 优化思路 5：启动速度优化
-
-```xml
-- 删除没用的web应用
-
-- 关闭websocket
-
-- 随机数优化
-
-- 多线程启动web应用
-<Host startStopThreads="0"> 
-</Host>
+```
+- 单位为TPS（Transactions PerSecond的缩写）也就是事务数/秒
+- 一个事务是指一个客户机向服务器发送请求然后服务器做出反应的过程
 ```
 
 
 
-##### 优化思路 6：其他方面
+## 1、Java 虚拟机运行优化
 
+```
+- 内存直接影响服务的运行效率和吞吐量
+- 垃圾回收机制会不同程度地导致程序运行中断（垃圾回收策略不同，垃圾回收次数和回收效率都是不同的）
+```
+
+
+
+### 1.1 内存分配优化
+
+| 参数                 | 参数作用                                | 优化建议                |
+| -------------------- | --------------------------------------- | ----------------------- |
+| -server              | 启动Server，以服务端模式运行            | 服务端模式建议开启      |
+| -Xms                 | 最小堆内存                              | 建议-Xmx设置相同        |
+| -Xmx                 | 最大堆内存                              | 建议设置为可用内存的80% |
+| -XX:MetaspaceSize    | 元空间初始值                            |                         |
+| -XX:MaxMetaspaceSize | 元空间最大内存                          | 默认无限                |
+| -XX:NewRatio         | 年轻代和老年代大小比值，取整数，默认2   | 不需要修改              |
+| -XX:SurvivorRatio    | Eden区与Survivor区大小比值，取整，默认8 | 不需要修改              |
+
+参数调整示例
+
+```shell
+JAVA_OPTS="-server -Xms2048m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m"
+```
+
+
+
+### 1.2 垃圾回收（GC）策略优化
+
+#### 垃圾回收性能指标
+
+```
+- 吞吐量：工作时间（排除GC时间）占总时间的百分比， 工作时间并不仅是程序运行的时间，还包含内存分配时间
+- 暂停时间：由垃圾回收导致的应用程序停止响应次数/时间
+```
+
+
+
+#### 垃圾收集器
+
+##### （1）串行收集器（Serial Collector）
+
+```
+工作进程 -->（单线程）垃圾回收线程进行垃圾收集 --> 工作进程继续
+
+- 单线程执行所有的垃圾回收工作，适用于单核CPU服务器
+```
+
+##### （2）并行收集器（Parallel Collector）
+
+```
+工作进程 --> （多线程）垃圾回收线程进行垃圾收集 --> 工作进程继续
+
+- 并行收集器又称为吞吐量收集器（关注吞吐量），以并行的方式执行年轻代的垃圾回收，该方式可以显著降低垃圾回收的开销（指多条垃圾收集线程并行工作，但此时用户线程仍然处于等待状态)
+- 适用于多处理器或多线程硬件上运行的数据量较大的应用
+```
+
+##### （3）并发收集器（Concurrent Collector）
+
+```
+- 以并发的方式执行大部分垃圾回收工作，以缩短垃圾回收的暂停时间
+- 适用于那些响应时间优先于吞吐量的应用，因为该收集器虽然最小化了暂停时间(指用户线程与垃圾收集线程同时执行,但不一定是并行的，可能会交替进行)， 但是会降低应用程序的性能
+```
+
+##### （4）CMS收集器（Concurrent Mark Sweep Collector）
+
+```
+- 并发标记清除收集器，适用于那些更愿意缩短垃圾回收暂停时间并且负担的起与垃圾回收共享处理器资源的应用
+```
+
+##### （5）G1收集器（Garbage-First Garbage Collector）
+
+```
+- 适用于大容量内存的多核服务器，可以在满足垃圾回收暂停时间目标的同时， 以最大可能性实现高吞吐量(JDK1.7之后)
+```
+
+
+
+#### 垃圾回收器参数
+
+| 参数                           | 描述                                                         |
+| ------------------------------ | ------------------------------------------------------------ |
+| -XX:+UseSerialGC               | 启用串行收集器                                               |
+| -XX:+UseParallelGC             | 启用并行垃圾收集器，配置了该选项，那么 -XX:+UseParallelOldGC 默认启用 |
+| -XX:+UseParNewGC               | 年轻代采用并行收集器，如果设置了 -XX:+UseConcMarkSweepGC 选项，自动启用 |
+| -XX:ParallelGCThreads          | 年轻代及老年代垃圾回收使用的线程数。默认值依赖于JVM使用的CPU个数 |
+| -XX:+UseConcMarkSweepGC（CMS） | 对于老年代，启用CMS垃圾收集器。 当并行收集器无法满足应用的延迟需求时，推荐使用CMS或G1收集器。启用该选项后， -XX:+UseParNewGC自动启用 |
+| -XX:+UseG1GC                   | 启用G1收集器。 G1是服务器类型的收集器， 用于多核、大内存的机器。它在保持高吞吐量的情况下，高概率满足GC暂停时间的目标 |
+
+- 在bin/catalina.sh的脚本中 , 追加如下配置 
+
+```shell
+JAVA_OPTS="-XX:+UseConcMarkSweepGC"
+```
+
+
+
+## 2、Tomcat 配置优化
+
+### 2.1 调整 Tomcat 线程池
+
+- Connector 连接器使用线程池
+
+![image-20210517111910830](image/image-20210517111910830.png)
+
+### 2.2 调整 Tomcat 连接器
+
+- 调整tomcat/conf/server.xml 中关于链接器的配置可以提升应用服务器的性能
+
+| 参数           | 说明                                                         |
+| -------------- | ------------------------------------------------------------ |
+| maxConnections | 最大连接数，当到达该值后，服务器接收但不会处理更多的请求， 额外的请求将会阻塞直到连接数低于maxConnections 。可通过ulimit -a 查看服务器限制。对于CPU要求更高(计算密集型)时，建议不要配置过大； 对于CPU要求不是特别高时，建议配置在2000左右(受服务器性能影响)。 当然这个需要服务器硬件的支持 |
+| maxThreads     | 最大线程数，需要根据服务器的硬件情况，进行一个合理的设置     |
+| acceptCount    | 最大排队等待数，当服务器接收的请求数量到达maxConnections ，此时Tomcat会将后面的请求，存放在任务队列中进行排序， acceptCount指的就是任务队列中排队等待的请求数 。 一台Tomcat的最大的请求处理数量，是maxConnections+acceptCount |
+
+
+
+### 2.3 禁用 AJP 连接器
+
+```xml
+<!-- 注释下面的配置，禁用 AJP 协议 -->
+<!-- Define an AJP 1.3 Connector on port 8009 -->
+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+```
+
+
+
+### 2.4 调整 IO 模式
+
+- Tomcat8 之前的版本默认使用BIO（阻塞式IO），对于每一个请求都要创建一个线程来处理，不适合高并发
+- Tomcat8 以后的版本默认使用NIO模式（非阻塞式IO）
+
+
+
+### 2.5 动静分离
+
+- 可以使用 Nginx + Tomcat 相结合的部署方案
+
+```
+- Nginx负责静态资源访问
+- Tomcat负责Jsp等动态资源访问处理（因为Tomcat不擅⻓处理静态资源）
+```
+
+
+
+### 2.6 启动速度优化
+
+```xml
+- 删除没用的web应用
+- 关闭websocket
+- 随机数优化
+- 多线程启动web应用
+<Host startStopThreads="0"> </Host>
+```
+
+
+
+### 2.7 其他方面
+
+```
 - Connector 配置压缩属性compression=“500”，文件大于500bytes才会压缩
 - 数据库优化 减少对数据库访问等待的时间，缓存方案考虑一下
 - 开启浏览器缓存、nginx静态资源部署等 开启浏览器缓存，cdn静态资源服务器，nginx
 - too many open files 关掉无用的句柄或者增加句柄数:ulimit -n 10000
+```
 
 
 
