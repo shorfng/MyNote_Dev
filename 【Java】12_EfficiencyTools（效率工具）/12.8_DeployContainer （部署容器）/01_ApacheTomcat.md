@@ -2,9 +2,9 @@
 
 
 
-# 1、Tomcat 下载安装和配置
+# 第一章 Tomcat 下载安装和配置
 
-## 1.0 Tomcat 下载
+## 0、Tomcat 下载
 
 - 官网地址：https://tomcat.apache.org/
 
@@ -12,23 +12,23 @@
 
 
 
-## 1.1 Win系统 -  Tomcat安装和配置
+## 1、Docker - Tomcat安装和配置
 
 
 
-
-
-## 1.2 Linux系统 -  Tomcat安装和配置
-
+## 2、Linux系统 - Tomcat安装和配置
 
 
 
-
-## 1.3 Mac系统 -  Tomcat安装和配置
-
+## 3、Win系统 - Tomcat安装和配置
 
 
-## 1.4 Tomcat 目录结构
+
+## 4、Mac系统 - Tomcat安装和配置
+
+
+
+## 5、Tomcat 目录结构
 
 ![image-20210429135128515](image/image-20210429135128515.png)
 
@@ -94,9 +94,9 @@
 
 
 
-## 1.5 核心配置文件 conf/server.xml 详解
+## 6、核心配置文件 conf/server.xml 详解
 
-### （1）节点框架
+### 6.1 节点框架
 
 ```xml
 <!-- Server 根元素，创建⼀个Server实例 -->
@@ -134,7 +134,7 @@
 
 
 
-### （2）详细解析
+### 6.2 详细解析
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -314,13 +314,13 @@
 
 
 
-# 2、Tomcat 架构设计
+# 第二章 Tomcat 架构设计
 
-## 2.0 浏览器访问服务器的流程
+## 1、浏览器访问服务器的流程
 
 
 
-## 2.1 Tomcat 是一个 http 服务器
+## 2、Tomcat 是一个 http 服务器
 
 ```
 - Tomcat 能够接收并且处理 http 请求，所以它是一个 http 服务器
@@ -332,7 +332,9 @@
 
 ![image-20210429155727601](image/image-20210429155727601.png)
 
-## 2.2 Tomcat 是一个 Servlet 容器
+
+
+## 3、Tomcat 是一个 Servlet 容器
 
 ```
 - HTTP 服务器接收到请求之后把请求交给Servlet容器来处理，Servlet 容器通过Servlet接口调用业务类。Servlet接口和Servlet容器这一整套内容叫作Servlet规范
@@ -354,7 +356,7 @@
 
 
 
-## 2.3 Tomcat 总体架构
+## 4、Tomcat 总体架构
 
 ```
 两大核心组件：连接器（Connector）和容器（Container）
@@ -371,9 +373,9 @@ Tomcat是⼀个由⼀系列可配置（conf/server.xml）的组件构成的Web�
 
 
 
-## 2.4 Tomcat 连接器组件 - Coyote
+## 5、Tomcat 连接器组件 - Coyote
 
-### （1）**Coyote** 简介
+### 5.1 Coyote 简介
 
 ```
 Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通过Coyote与服务器建⽴连接、发送请求并接受响应
@@ -388,7 +390,7 @@ Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通
 
 
 
-### （2）Coyote 支持的 IO 模型
+### 5.2 Coyote 支持的 IO 模型
 
 - 传输层 IO模型
 
@@ -401,7 +403,7 @@ Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通
 
 
 
-### （3）Coyote 支持的协议
+### 5.3 Coyote 支持的协议
 
 - 应用层协议
 
@@ -413,7 +415,7 @@ Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通
 
 
 
-### （4）Coyote的内部组件及流程
+### 5.4 Coyote的内部组件及流程
 
 ![image-20210505152306592](image/image-20210505152306592.png)
 
@@ -426,9 +428,9 @@ Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通
 
 
 
-## 2.5 Tomcat Servlet 容器组件 -  Catalina
+## 6、Tomcat Servlet 容器组件 -  Catalina
 
-### （1）Tomcat/Catalina实例
+### 6.1 Tomcat/Catalina实例
 
 - 整个Tomcat就是⼀个Catalina实例，Tomcat 启动的时候会初始化这个实例，Catalina实例通过加载server.xml完成其他实例的创建，创建并管理⼀个Server，Server创建并管理多个服务，每个服务又可以有多个Connector和⼀个Container
 
@@ -461,7 +463,7 @@ Container（一个）
 
 
 
-### （2）Container 组件结构
+### 6.2 Container 组件结构
 
 ```
 Engine（一个）
@@ -485,19 +487,21 @@ Wrapper（多个）
 
 
 
-# 3、Tomcat 迷你版实现
+# 第三章 Tomcat 迷你版实现
 
 
 
-# 4、Tomcat 源码分析
+# 第四章 Tomcat 源码分析
 
-## 4.1 下载源码
+## 1、下载源码
 
 地址：https://tomcat.apache.org/
 
 ![image-20210510154933813](image/image-20210510154933813.png)
 
-## 4.2 导入IDEA步骤
+
+
+## 2、导入IDEA步骤
 
 ### （1）解压 tar.gz 压缩包
 
@@ -640,9 +644,9 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 
 
-# 5、Tomcat 类加载机制
+# 第五章 Tomcat 类加载机制
 
-## 5.1 Java类库存放目录
+## 1、Java类库存放目录
 
 ```
 - 放置在 /common 目录中，类库可被Tomcat和所有的Web应用程序共同使用
@@ -651,7 +655,9 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 - 放置在 /WebApp/WEB-INF 目录中，类库仅仅可以被该Web应用程序使用，对Tomcat和其他Web应用程序都不可见
 ```
 
-## 5.2 Tomcat 类加载架构
+
+
+## 2、Tomcat 类加载架构
 
 ```
 - 为了支持上述目录结构，并对目录里面的类库进行加载和隔离，Tomcat自定义了多个类加载器
@@ -664,7 +670,7 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 
 
-# 6、Tomcat 性能优化
+# 第六章 Tomcat 性能优化
 
 ##### 优化思路 1：核心组件
 
@@ -701,9 +707,9 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 
 
-# 7、问题报错
+# 第七章 问题报错
 
-## 7.1 Tomcat8.5.x, js中文乱码
+## 1、Tomcat8.5.x, js中文乱码
 
 - 解决方案
 
