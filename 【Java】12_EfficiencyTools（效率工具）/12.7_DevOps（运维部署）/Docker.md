@@ -22,95 +22,81 @@ https://github.com/docker/docker-ce
 
 
 
-### 1.2 Linux系统 -  Tomcat安装和配置
+### 1.2 Linux系统 -  Docker 安装和配置
 
-（1）
-
-
+#### （1）查看centos系统版本命令
 
 ```shell
-查看centos系统版本命令
 cat /etc/centos-release
+```
 
+#### （2）配置阿里云yum源
 
-配置阿里云yum源
-1.下载安装
+```shell
+# 1.下载安装
 wget yum install -y wget
 
-2.备份默认的
+# 2.备份默认的
 yum mv /etc/yum.repos.d /etc/yum.repos.d.backup
 
-
-3.设置新的yum目录 
+# 3.设置新的 yum 目录 
 mkdir -p /etc/yum.repos.d
 
-4.下载阿里yum配置到该目录中，选择对应版本 
+# 4.下载阿里 yum 配置到该目录中，选择对应版本 
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 
-
-
-5.更新epel源为阿里云epel源 
+# 5.更新 epel 源为阿里云epel源 
 mv /etc/yum.repos.d/epel.repo /etc/yum.repos.d/epel.repo.backup
 mv /etc/yum.repos.d/epel-testing.repo /etc/yum.repos.d/epel-testing.repo.backup
 wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
 
-6.重建缓存
+# 6.重建缓存
 yum clean all
 yum makecache
 
-
-7.看一下yum仓库有多少包 
+# 7.看一下yum仓库有多少包 
 yum repolist
+```
 
+#### （3）升级系统内核
 
-
-
-
-升级系统内核
+```shell
+# 升级系统内核
 rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
 yum --enablerepo=elrepo-kernel install -y kernel-lt
 grep initrd16 /boot/grub2/grub.cfg
 grub2-set-default 0
 
+# 重启虚拟机
 
-重启虚拟机
-
-
-
-查看centos系统内核信息
+# 查看 centos 系统内核信息
 # 简单信息
 uname -r
 # 详细信息
 uname -a
 
-查看CPU命
+# 查看 CPU
 lscpu
 
-
-查看内存
+# 查看内存
 free -h
 
-查看硬盘信息
+# 查看硬盘信息
 fdisk -l
+```
 
+#### （4）常规设置
 
-
-
-常规设置
-
-关闭防火墙
+```shell
+# 关闭防火墙
 systemctl stop firewalld
 systemctl disable firewalld
 
-
-关闭selinux
+# 关闭selinux
 sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 setenforce 0
 
-
-
-网桥过滤
-
+#网桥过滤
 vi /etc/sysctl.conf
 
 net.bridge.bridge-nf-call-ip6tables = 1
@@ -118,129 +104,77 @@ net.bridge.bridge-nf-call-iptables = 1
 net.bridge.bridge-nf-call-arptables = 1
 net.ipv4.ip_forward=1 net.ipv4.ip_forward_use_pmtu = 0
 
-生效命令
+# 使命令生效
 sysctl --system
-
-
-
-命令补全软件
-安装bash-completion
-yum -y install bash-completion bash-completion-extras
-
-使 bash-completion 失效
-source /etc/profile.d/bash_completion.sh
-
-
-上传文件（未验证）
-安装命令
-yum -y install lrzsz
-
-使用
-1.鼠标拖拽上传文件
-
-2.下载文件 
-2.1下载一个文件 
-sz filename
-
-2.2下载多个文件
-sz filename1 filename2
-
-2.3下载dir目录下所有文件，不包含dir下的文件夹
-sz dir/*
-
-
-
-
-
-
-
-安装docker
-阿里云开发者平台
-开发者平台官网地址：可以参考阿里云官网提供的docker安装教程进行安装。
-https://www.aliyun.com/
-
-
-安装docker前置条件
-yum install -y yum-utils device-mapper-persistent-data lvm2
-
-
-添加源
-yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
-
-yum makecache fast
-
-
-
-
-查看docker版本
-yum list docker-ce --showduplicates | sort -r
-
-
-
-安装docker
-
-安装最新版：
-yum -y install docker-ce
-
-安装指定版本：
-语法规则：yum install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> containerd.io
-
-本次安装19.03
-yum install -y docker-ce-19.03.9-3.el7 docker-ce-cli-19.03.9-3.el7
-
-
-
-开启 docker 服务
-systemctl start docker
-
-查看 docker 状态
-systemctl status docker
-
-
-
-
-
-
-
-
-
-docker 命令
-# docker 简单信息
-docker -v
-# docker 详细信息
-docker version
-
-# docker 运行信息
-docker info
-
-
-
-
-
-
-
-
-
-
-
-
-
 ```
 
-
-
-
-
-
-
-
-
-
-
-安装阿里云镜像加速器
+#### （5）其他软件安装（选择性安装）
 
 ```shell
-# 整体粘贴命令执行
+# 补全软件 bash-completion
+yum -y install bash-completion bash-completion-extras
+
+# 使 bash-completion 生效
+source /etc/profile.d/bash_completion.sh
+
+# =====================================================
+
+# 上传文件软件（未验证）
+# 安装命令
+yum -y install lrzsz
+
+# 使用
+（1）鼠标拖拽上传文件
+（2）下载文件 
+# 下载一个文件 
+sz filename
+
+# 下载多个文件
+sz filename1 filename2
+
+# 下载dir目录下所有文件，不包含dir下的文件夹
+sz dir/*
+```
+
+#### （6）安装 Docker 前置准备
+
+- 阿里云开发者平台：https://www.aliyun.com/
+
+```shell
+# 安装docker前置条件
+yum install -y yum-utils device-mapper-persistent-data lvm2
+
+# 添加源
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+yum makecache fast
+
+# 查看docker版本
+yum list docker-ce --showduplicates | sort -r
+```
+
+#### （7）安装 Docker 
+
+```shell
+# 安装最新版：
+yum -y install docker-ce
+
+# 安装指定版本：
+语法规则：yum install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> containerd.io
+
+# 本次安装19.03
+yum install -y docker-ce-19.03.9-3.el7 docker-ce-cli-19.03.9-3.el7
+ 
+# 开启 docker 服务
+systemctl start docker
+
+# 查看 docker 状态
+systemctl status docker
+```
+
+#### （8）设置 Docker 
+
+```shell
+# 安装阿里云镜像加速器（整体粘贴命令执行）
 mkdir -p /etc/docker
 tee /etc/docker/daemon.json <<-'EOF' 
 { 
@@ -249,61 +183,86 @@ tee /etc/docker/daemon.json <<-'EOF'
 EOF
 systemctl daemon-reload
 systemctl restart docker
-```
 
-
-
-
-
-设置 docker 开启启动服务
-
-```shell
+# 设置 docker 开机启动服务
 systemctl enable docker
 ```
 
-
-
-
-
-
-
-
-
-
-
-
+#### （9）验证 Docker 安装是否成功
 
 ```shell
-# mirror Aliyun
-curl -fsSL https://get.docker.com | bash -s docker 
-```
+# docker 简单信息
+docker -v
 
-启动并加入开机启动
-
-```shell
-sudo systemctl start docker
-sudo systemctl enable docker
-```
-
-验证安装是否成功(有client和service两部分表示docker安装启动都成功了)
-
-```shell
+# docker 详细信息（有client和service两部分表示docker安装启动都成功了）
 docker version
+
+# docker 运行信息
+docker info
 ```
 
 
 
-### 1.2 Win系统 -  Tomcat安装和配置
+### 1.2 Win系统 -  Docker 安装和配置
+
+- TODO
 
 
 
-### 1.3 Mac系统 -  Tomcat安装和配置
+### 1.3 Mac系统 -  Docker 安装和配置
+
+- TODO
 
 
 
 ## 2、Docker 版本
 
 Docker 从 17.03 版本之后分为 CE（Community Edition: 社区版，免费） 和 EE（Enterprise Edition: 企业版，收费）
+
+
+
+## 3、Docker 概述
+
+### 3.1 Docker 是什么
+
+```
+当人们说“Docker”时，通常是指 Docker Engine，它是一个客户端 - 服务器应用程序，由 Docker 守护进程、一个 REST API 指定与守护进程交互的接口、和一个命令行接口（CLI）与守护进程通信（通过封装REST API）
+
+Docker Engine 从 CLI 中接受 docker 命令，例如 docker run 、docker ps 来列出正在运行的容器、docker images 来列出镜像，等等
+
+docker是一个软件，可以运行在window、linux、mac等各种操作系统上
+
+docker 是一个开源的应用容器引擎，基于Go 语言开发并遵从 Apache2.0 协议开源，项目代码托管在github上进行维护
+
+docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上
+
+容器是完全使用沙箱机制，相互之间不会有任何接口,更重要的是容器性能开销极低
+```
+
+
+
+### 3.2 Docker 基本组成
+
+```
+Docker 主机(Host)：安装了Docker程序的机器（Docker直接安装在操作系统之上）
+Docker 仓库(Registry)：用来保存各种打包好的软件镜像；仓库分为公有仓库和私有仓库(类似maven) 
+Docker 镜像(Images)：软件打包好的镜像；放在docker仓库中
+Docker 容器(Container)：镜像启动后的实例称为一个容器；容器是独立运行的一个或一组应用
+```
+
+
+
+### 3.3 Docker 与 虚拟机
+
+| 特性     | 容器               | 虚拟机     |
+| -------- | ------------------ | ---------- |
+| 启动速度 | 秒级               | 分钟级     |
+| 性能     | 接近原生           | 较弱       |
+| 内存代价 | 很小               | 较多       |
+| 硬盘使用 | 一般为MB           | 一般为GB   |
+| 运行密度 | 单机支持上千个容器 | 一般几十个 |
+| 隔离性   | 安全隔离           | 安全隔离   |
+| 迁移性   | 优秀               | 一般       |
 
 
 
