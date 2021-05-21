@@ -19,3 +19,18 @@
 - 修改本地仓库默认路径
 - 
 
+
+
+
+
+那国内可以用的 Maven 的镜像地址其实有很多，比如说
+
+阿里云
+https://maven.aliyun.com/mvn/guide
+
+
+网易：
+https://mirrors.163.com/.help/maven.html
+
+腾讯云：
+https://mirrors.cloud.tencent.com/help/maven.html
