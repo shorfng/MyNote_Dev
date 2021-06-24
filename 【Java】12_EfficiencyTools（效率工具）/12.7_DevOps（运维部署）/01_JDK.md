@@ -2,19 +2,48 @@
 
 
 
-# 1、Win系统 -  JDK安装和配置
+# 第一章 JDK 下载安装和配置
+
+## 0、JDK的下载
+
+
+
+## 1、Docker - JDK安装和配置
+
+- 拉取镜像
+
+```shell
+docker pull openjdk:8-alpine3.9 
+```
+
+- 备份镜像
+
+```shell
+cd /docker_data/
+docker save openjdk:8-alpine3.9 -o jdk8.tar 
+```
+
+- 导入镜像
+
+```shell
+docker load -i jdk8.tar
+```
+
+
+
+## 2、Win系统 -  JDK安装和配置
 
 
 
 
 
-# 2、Linux系统 -  JDK安装和配置
+## 3、Linux系统 -  JDK安装和配置
 
 
 
 
 
-# 3、Mac系统 -  JDK安装和配置
+## 4、Mac系统 -  JDK安装和配置
 
 - 查看JDK安装路径
 
