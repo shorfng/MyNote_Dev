@@ -201,32 +201,6 @@ docker version
 docker info
 ```
 
-#### （10）Docker 图形化界面管理软件 - Portainer
-
-```shell
-# 创建Portainer文件夹
-mkdir -p /docker_data/portainer/data /docker_data/portainer/public
-
-# 进入Portainer文件夹
-cd /docker_data/portainer
-
-# 下载汉化文件
-wget https://labx.me/dl/4nat/public.zip
-
-# 安装zip的解压软件
-yum install zip
-yum install unzip
-
-# 解压汉化文件
-unzip public.zip
-
-# 安装Portainer
-docker run -d --restart=always --name portainer -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /docker_data/portainer/data:/data -v /docker_data/portainer/public:/public portainer/portainer:latest
-
-# 访问地址（admin/admin1234）
-http://192.168.203.128:9000
-```
-
 
 
 ### 1.2 Win系统 -  Docker 安装和配置
@@ -859,7 +833,7 @@ docker update --restart always tomcat8.5
 
 
 
-# 第三章 常用软件安装
+# 第三章 Docker 常用软件安装
 
 ## 1、安装 MySQL
 
@@ -1320,7 +1294,7 @@ docker network inspect bridge
 
 
 
-# 第五章 Docker 多容器应用部署和管理
+# 第五章 Docker 多容器应用部署和管理 - docker-compose
 
 ## 5.1 数据卷
 
@@ -1330,11 +1304,87 @@ docker network inspect bridge
 
 
 
-# 第六章 Docker 私服
+# 第六章 Docker 镜像制作 - Dockerfile
 
-## 6.1 官方私服 - registry
+## 6.1 命令
 
-## 6.2 企业私服 -  harbor
+
+
+# 第七章 Docker 私服
+
+## 7.1 官方私服 - registry
+
+## 7.2 企业私服 -  harbor
+
+
+
+# 第八章 idea 集成 Docker
+
+## 步骤1：修改服务器 docker.service 服务信息
+
+```shell
+# 修改服务器docker.service服务信息，允许其他主机远程访问服务器的docker
+vi /usr/lib/systemd/system/docker.service
+
+# 在ExecStart行最后增加 -H tcp://0.0.0.0:2375 开放远程主机访问权限
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2375
+
+# 重启docker
+systemctl daemon-reload
+systemctl restart docker
+
+# 查看docker进程，发现docker守护进程在已经监听2375的tcp端口 
+ps -ef|grep docker
+
+# 查看系统的网络端口，检查tcp的2375端口,docker的守护进程是否监听 
+netstat -tulp
+```
+
+## 步骤2：配置 idea
+
+
+
+
+
+# 第九章 Docker 图形化界面管理软件 - Portainer
+
+## 9.1 安装
+
+```shell
+# 创建Portainer文件夹
+mkdir -p /docker_data/portainer/data /docker_data/portainer/public
+
+# 进入Portainer文件夹
+cd /docker_data/portainer
+
+# 下载汉化文件
+wget https://labx.me/dl/4nat/public.zip
+
+# 安装zip的解压软件
+yum install zip
+yum install unzip
+
+# 解压汉化文件
+unzip public.zip
+
+# 安装Portainer
+docker run -d --restart=always --name portainer -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /docker_data/portainer/data:/data -v /docker_data/portainer/public:/public portainer/portainer:latest
+
+# 访问地址（admin/admin1234）
+http://192.168.203.128:9000
+```
+
+
+
+## 9.2 使用 - 拉取镜像
+
+
+
+## 9.3 使用 - 容器管理
+
+
+
+
 
 
 
