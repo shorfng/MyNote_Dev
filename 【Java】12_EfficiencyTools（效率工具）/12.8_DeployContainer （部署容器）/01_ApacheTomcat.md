@@ -18,6 +18,22 @@
 
 ## 2、Linux系统 - Tomcat安装和配置
 
+```bash
+# 下载好之后，使用ftp工具传送到服务器文件夹中
+cd /root
+
+# 解压压缩包
+tar -zxv -f apache-tomcat-7.0.92.tar.gz -C /usr/local
+
+# 启动tomcat
+cd /usr/local/apache-tomcat-7.0.92/bin
+./startup.sh
+
+# 查看tomcat日志
+cd /usr/local/apache-tomcat-7.0.92/logs
+tail -f catalina.out
+```
+
 
 
 ## 3、Win系统 - Tomcat安装和配置

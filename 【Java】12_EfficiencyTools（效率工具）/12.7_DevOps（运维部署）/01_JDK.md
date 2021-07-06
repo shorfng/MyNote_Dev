@@ -39,7 +39,63 @@ docker load -i jdk8.tar
 
 ## 3、Linux系统 -  JDK安装和配置
 
+### 3.1 使用上传安装包形式
 
+```bash
+# 查看当前Linux系统是否已经安装Java
+rpm -qa | grep java
+
+# 卸载两个openJD
+rpm -e --nodeps java-1.6.0-openjdk-1.6.0.0-1.66.1.13.0.el6.x86_64rpm -e --nodeps java-1.7.0-openjdk-1.7.0.45-2.4.3.3.el6.x86_64
+
+# 使用 FTP 工具上传JDK到Linux目录：/root/td_upload
+
+# 切换到upload目录下
+cd /root/
+
+# 解压JDK到/usr/local目录下
+tar -zxvf Linux_JDK_8u171_x64.tar.gz -C /usr/local/
+
+# 配置JDK环境变量
+vi /etc/profile
+
+# 将配置拷贝到最后一行
+# set java environment
+export JAVA_HOME=/usr/local/jdk1.8.0_171
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$JAVA_HOME/bin:$
+
+# 退出vim
+:wq
+
+# 使配置生效
+source /etc/profile
+
+# 验证JDK是否安装成功
+java -version
+```
+
+
+
+### 3.2 使用yum安装JDK
+
+```bash
+yum -y list java*
+yum -y install java-1.7.0-openjdk*
+
+# 默认jdk安装路径：/usr/lib/jvm
+
+# 配置环境变量
+vi /etc/profile
+
+# 配置
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$JAVA_HOME/bin:$
+
+# 使配置生效
+source /etc/profile
+```
 
 
 
