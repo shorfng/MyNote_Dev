@@ -73,11 +73,10 @@
 
 ### 【Java】05_JavaWeb_Database（数据库）
 - JavaWeb_5.0_DatabaseBasic（数据库基础）
-- JavaWeb_5.1_JDBC（数据库连接）
 - JavaWeb_5.2_MySQL
-- JavaWeb_5.3_Redis
-- JavaWeb_5.4_Oracle
-- JavaWeb_5.5_Neo4j（图数据库）
+- JavaWeb_5.2_Redis
+- JavaWeb_5.3_Oracle
+- JavaWeb_5.4_Neo4j（图数据库）
 
 
 
@@ -104,6 +103,8 @@
 ### 【Java】08_JavaExpert（高阶）
 
 - JavaExpert_8.1_JVM
+
+- JavaExpert_8.2_Arithmetic（数据结构与算法）
 
   
 
