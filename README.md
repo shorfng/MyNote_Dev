@@ -1,19 +1,18 @@
 # GitHub仓库代码
 
-| 仓库名称                                                     | 涵盖内容                                           |
-| ------------------------------------------------------------ | -------------------------------------------------- |
-| [MyCode_JavaDev](https://github.com/shorfng/MyCode_JavaDev)  | 【Java】01_JavaBasics（Java基础）                  |
-|                                                              | 【Java】02_JavaReinforce（Java加强）               |
-|                                                              | 【Java】03_JavaInterface（Java界面）               |
-| [MyCode_JavaWeb_Front](https://github.com/shorfng/MyCode_JavaWeb_Front) | 【Java】04_JavaWeb_Front（前端）                   |
-| [MyCode_JavaWeb_Database](https://github.com/shorfng/MyCode_JavaWeb_Database) | 【Java】05_JavaWeb_Database（数据库）              |
-| [MyCode_JavaWeb_Server](https://github.com/shorfng/MyCode_JavaWeb_Server) | 【Java】06_JavaWeb_Server（服务器端）              |
-| [MyCode_JavaWeb_Framework](https://github.com/shorfng/MyCode_JavaWeb_Framework) | 【Java】07_JavaWeb_Framework（开源框架）           |
-| MyCode_JavaExpert                                            | 【Java】08_JavaExpert（高阶）                      |
-| MyCode_Architecture_Distributed                              | 【Java】09_Architecture_Distributed（分布式架构）  |
-| MyCode_Architecture_MicroService                             | 【Java】10_Architecture_MicroService（微服务架构） |
-|                                                              |                                                    |
-| MyCode_EfficiencyTools                                       | 【Java】12_EfficiencyTools（效率工具）             |
+| 仓库名称                                                     | 涵盖内容                                 |
+| ------------------------------------------------------------ | ---------------------------------------- |
+| [MyCode_JavaDev](https://github.com/shorfng/MyCode_JavaDev)  | 【Java】01_JavaBasics（Java基础）        |
+|                                                              | 【Java】02_JavaReinforce（Java加强）     |
+|                                                              | 【Java】03_JavaInterface（Java界面）     |
+| [MyCode_JavaWeb_Front](https://github.com/shorfng/MyCode_JavaWeb_Front) | 【Java】04_JavaWeb_Front（前端）         |
+| [MyCode_JavaWeb_Database](https://github.com/shorfng/MyCode_JavaWeb_Database) | 【Java】05_JavaWeb_Database（数据库）    |
+| [MyCode_JavaWeb_Server](https://github.com/shorfng/MyCode_JavaWeb_Server) | 【Java】06_JavaWeb_Server（服务器端）    |
+| [MyCode_JavaWeb_Framework](https://github.com/shorfng/MyCode_JavaWeb_Framework) | 【Java】07_JavaWeb_Framework（开源框架） |
+| MyCode_JavaExpert                                            | 【Java】08_JavaExpert（高阶）            |
+| MyCode_Distributed                                           | 【Java】09_Distributed（分布式）         |
+| MyCode_MicroService                                          | 【Java】10_MicroService（微服务）        |
+| MyCode_EfficiencyTools                                       | 【Java】11_EfficiencyTools（效率工具）   |
 
 
 
@@ -108,50 +107,50 @@
 
   
 
-### 【Java】09_Architecture_Distributed（分布式架构）
+### 【Java】09_Distributed（分布式）
 
 - Distributed_9.0_Basic（分布式架构基础）
 
 
 
-### 【Java】10_Architecture_MicroService（微服务架构）
+### 【Java】10_MicroService（微服务）
 
 - MicroService_10.0_Basic（微服务架构基础）
 
 
 
-### 【Java】12_EfficiencyTools（效率工具）
+### 【Java】11_EfficiencyTools（效率工具）
 
-- 12.1_DevTools（开发工具）
+- 11.1_DevTools（开发工具）
   - IDEA
   - DataGrip
-- 12.2_BuildTools（项目构建工具）
+- 11.2_BuildTools（项目构建工具）
   - Maven
   - Gradle
   - Ant
-- 12.3_VcsTools（源码管理工具）
+- 11.3_VcsTools（源码管理工具）
   - Git和GitLab
   - Subversion（SVN）
-- 12.4_CodeQualityTools（代码质量管理工具）
+- 1.4_CodeQualityTools（代码质量管理工具）
   - SonarQube
-- 12.5_UTTools（测试工具）
+- 11.5_UTTools（测试工具）
   - JMeter
   - PostMan
   - SoapUI
 - 12.6_CITools（持续集成工具）
   - Hudson
   - Jenkins
-- 12.7_DevOps（运维部署）
+- 11.7_DevOps（运维部署）
   - JDK
   - Nacos
   - Docker
   - Kubernetes（K8S）
-- 12.8_DeployContainer （部署容器）
-  - ApacheTomcat
+- 11.8_DeployContainer （部署容器）
+  - Tomcat
 
 
 
-### 【Java】13_拓展技能
+### 【Java】12_拓展技能
 
 - Fiddler（抓包工具）
 
