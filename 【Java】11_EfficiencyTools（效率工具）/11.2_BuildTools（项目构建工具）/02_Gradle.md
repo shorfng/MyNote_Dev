@@ -10,7 +10,31 @@ https://services.gradle.org/distributions/
 
 # 1、Win系统 -  Gradle安装和配置
 
+- 第一次使用 idea 打开 gradle 的项目，软件会自动下载，因此不需要下载和配置
+- 修改 gradle 镜像
 
+```properties
+# 步骤1：找到 gradle 安装根目录
+C:\Users(用户名).gradle\
+
+# 步骤2：添加 init.gradle，内容如下
+allprojects{
+    repositories {
+        def REPOSITORY_URL = 'http://maven.aliyun.com/nexus/content/groups/public/'
+        all { ArtifactRepository repo ->
+            if(repo instanceof MavenArtifactRepository){
+                def url = repo.url.toString()
+                if (url.startsWith('https://repo1.maven.org/maven2') || url.startsWith('https://jcenter.bintray.com/')) {
+                    remove repo
+                }
+            }
+        }
+        maven {
+            url REPOSITORY_URL
+        }
+    }
+}
+```
 
 
 
@@ -87,3 +111,11 @@ OS:           Mac OS X 10.15.5 x86_64
 修改Gradle的缓存路径修改的四种方法
 
 https://blog.csdn.net/github_38616039/article/details/79933133?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
+
+
+
+
+
+> 参考资料
+
+- gradle 修改镜像：https://www.cnblogs.com/xinmengwuheng/p/9483573.html
