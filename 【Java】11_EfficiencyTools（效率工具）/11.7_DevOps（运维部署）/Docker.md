@@ -1367,8 +1367,11 @@ yum install unzip
 # 解压汉化文件
 unzip public.zip
 
-# 安装Portainer
+# 安装Portainer（Linux）
 docker run -d --restart=always --name portainer -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /docker_data/portainer/data:/data -v /docker_data/portainer/public:/public portainer/portainer:latest
+
+# 安装Portainer（Mac）
+docker run -d --restart=always --name portainer -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /Users/td/Documents/03_DevTools/docker_data/portainer/data:/data -v /Users/td/Documents/03_DevTools/docker_data/portainer/public:/public portainer/portainer:latest
 
 # 访问地址（admin/admin1234）
 http://192.168.203.128:9000
