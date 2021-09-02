@@ -103,7 +103,7 @@ tail -f catalina.out
 ### （7）work
 
 ```
-- 运行时生成的文件，最终运行的文件都在这里
+- jsp运行时生成的文件，最终运行的文件都在这里
 - 通过webapps中的项目生成的！可以把这个目录下的内容删除，再次运行时会生再次生成work目录
 - 当客户端用户访问一个JSP文件时，Tomcat会通过JSP生成Java文件，然后再编译Java文件生成class文件，生成的java和class文件都会存放到这个目录下
 ```
@@ -199,21 +199,13 @@ tail -f catalina.out
 		<!-- 默认情况下，Service 并未添加共享线程池配置，如果想添加⼀个线程池，可以在<Service>下添加如下配置：
 
 			name：线程池名称，⽤于 Connector中指定
-
 			namePrefix：所创建的每个线程的名称前缀，⼀个单独的线程名称为 namePrefix+threadNumber
-
 			maxThreads：池中最⼤线程数
-
 			minSpareThreads：活跃线程数，也就是核⼼池线程数，这些线程不会被销毁，会⼀直存在
-
 			maxIdleTime：线程空闲时间，超过该时间后，空闲线程会被销毁，默认值为6000毫秒（1分钟）
-
 			maxQueueSize：在被执⾏前最⼤线程排队数⽬，默认为Int的最⼤值，也就是⼴义的⽆限。除⾮特殊情况，这个值 不需要更改，否则会有请求不会被处理的情况发⽣
-
 			prestartminSpareThreads：启动线程池时是否启动 minSpareThreads部分线程。默认值为false，即不启动
-
 			threadPriority：线程池中线程优先级，默认值为5，值从1到10
-
 			className：线程池实现类，未指定情况下，默认实现类为org.apache.catalina.core.StandardThreadExecutor，如果想使⽤⾃定义线程池⾸先需要实现 org.apache.catalina.Executor 接⼝
 		-->
 		<Executor 
@@ -233,13 +225,13 @@ tail -f catalina.out
 
 		protocol：当前 Connector ⽀持的访问协议。 默认为 HTTP/1.1，并采⽤⾃动切换机制选择⼀个基于 Java NIO 的链接器或者基于本地APR的链接器（根据本地是否含有Tomcat的本地库判定）
 
-		connectionTimeOut:Connector 接收链接后的等待超时时间，单位为毫秒，-1 表示不超时
+		connectionTimeOut：Connector 接收链接后的等待超时时间，单位为毫秒，-1 表示不超时
 
 		redirectPort：当前 Connector 不⽀持SSL请求，接收到了⼀个请求，并且也符合 security-constraint 约束，需要SSL传输，Catalina ⾃动将请求重定向到指定的端⼝。
 
-		executor：指定共享线程池的名称， 也可以通过 maxThreads、minSpareThreads 等属性配置内部线程池
+		executor：指定共享线程池的名称，也可以通过 maxThreads、minSpareThreads 等属性配置内部线程池
 
-		URIEncoding:⽤于指定编码URI的字符编码，Tomcat8.x版本默认的编码为 UTF-8 , Tomcat7.x版本默认为ISO-8859-1
+		URIEncoding：⽤于指定编码URI的字符编码，Tomcat8.x版本默认的编码为 UTF-8，Tomcat7.x版本默认为ISO-8859-1
 		-->
 		<Connector 
 			executor="commonThreadPool" 
@@ -341,7 +333,8 @@ tail -f catalina.out
 ```
 - Tomcat 能够接收并且处理 http 请求，所以它是一个 http 服务器
 
-- 浏览器访问服务器使用的是Http协议，Http是应用层协议，用于定义数据通信的格式，具体的数据传输使用的是TCP/IP协议，Http服务器接收到这个请求之后，会调用具体的程序（Java类）进行处理，往往不同的请求由不同的Java类完成处理
+- 浏览器访问服务器使用的是Http协议
+- Http是应用层协议，用于定义数据通信的格式，具体的数据传输使用的是TCP/IP协议，Http服务器接收到这个请求之后，会调用具体的程序（Java类）进行处理，往往不同的请求由不同的Java类完成处理
 ```
 
 - 浏览器访问服务器的流程
@@ -381,7 +374,9 @@ tail -f catalina.out
 容器（Container）：负责内部处理，加载和管理 Servlet，以及具体处理 Request 请求
 ```
 
-Tomcat是⼀个由⼀系列可配置（conf/server.xml）的组件构成的Web容器，⽽Catalina是Tomcat的servlet容器，是 Tomcat 的核心 ， 其他模块都是为Catalina 提供⽀撑的。 ⽐如 ： 通过 Coyote 模块提供链接通信，Jasper 模块提供 JSP 引擎，Naming 提供JNDI 服务，Juli 提供⽇志服务。
+- Tomcat是⼀个由⼀系列可配置（conf/server.xml）的组件构成的Web容器
+  - Catalina是Tomcat的servlet容器，是 Tomcat 的核心 
+  - 其他模块都是为 Catalina 提供⽀撑的，⽐如 ： 通过 Coyote 模块提供链接通信，Jasper 模块提供 JSP 引擎，Naming 提供JNDI 服务，Juli 提供⽇志服务。
 
 ![image-20210505193118906](image/image-20210505193118906.png)
 
@@ -394,11 +389,11 @@ Tomcat是⼀个由⼀系列可配置（conf/server.xml）的组件构成的Web�
 ### 5.1 Coyote 简介
 
 ```
-Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通过Coyote与服务器建⽴连接、发送请求并接受响应
+Coyote 是Tomcat 中连接器的组件名称，是对外的接口，客户端通过Coyote与服务器建⽴连接、发送请求并接受响应
 
 （1）Coyote 封装了底层的⽹络通信（Socket 请求及响应处理）
 （2）Coyote 使Catalina 容器（容器组件）与具体的请求协议及IO操作⽅式完全解耦
-（3）Coyote 将Socket 输⼊转换封装为 Request 对象，进⼀步封装后交由Catalina 容器进⾏处理，处理请求完成后, Catalina 通过Coyote 提供的Response 对象将结果写⼊输出流
+（3）Coyote 将Socket 输⼊转换封装为 Request 对象，进⼀步封装后交由Catalina 容器进⾏处理，处理请求完成后，Catalina 通过Coyote 提供的Response 对象将结果写⼊输出流
 （4）Coyote 负责的是具体协议（应⽤层）和IO（传输层）相关内容
 ```
 
@@ -413,7 +408,7 @@ Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通
 | IO模型 | 描述                                                         |
 | ------ | ------------------------------------------------------------ |
 | BIO    | 同步阻塞I/O（Tomcat 8.0之前默认采用）                        |
-| NIO    | 同步非阻塞I/O，采用Java NIO类库实现（默认的IO模型）          |
+| NIO    | 同步非阻塞I/O，采用Java NIO类库实现（Tomcat 8.0 + 默认的 IO 模型为 NIO） |
 | NIO2   | 异步I/O，采用 JDK7 最新 NIO2 类库实现                        |
 | APR    | 采用Apache 可移植运行库实现，是C/C++编写的本地库（需要单独安装APR库） |
 
@@ -446,15 +441,15 @@ Coyote 是Tomcat 中连接器的组件名称 , 是对外的接口，客户端通
 
 ## 6、Tomcat Servlet 容器组件 -  Catalina
 
-### 6.1 Tomcat/Catalina实例
+### 6.1 Catalina 实例
 
 - 整个Tomcat就是⼀个Catalina实例，Tomcat 启动的时候会初始化这个实例，Catalina实例通过加载server.xml完成其他实例的创建，创建并管理⼀个Server，Server创建并管理多个服务，每个服务又可以有多个Connector和⼀个Container
 
 ```
-⼀个Catalina实例（容器）
-		⼀个 Server实例（容器）
-				多个Service实例（容器）
-        		每⼀个Service实例下可以有多个Connector实例和⼀个Container实例
+⼀个 Catalina 实例（容器）
+		⼀个 Server 实例（容器）
+				多个 Service 实例（容器）
+        		每⼀个 Service 实例下可以有多个 Connector 实例和⼀个 Container 实例
 ```
 
 
