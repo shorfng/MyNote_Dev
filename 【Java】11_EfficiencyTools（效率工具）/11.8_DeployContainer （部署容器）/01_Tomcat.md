@@ -500,6 +500,170 @@ Wrapper（多个）
 
 # 第三章 Tomcat 迷你版实现
 
+## Minicat 1.0 版本：浏览器请求
+
+```java
+// Minicat 1.0版本：浏览器请求 http://localhost:8081，返回一个固定的字符串到页面 "Hello Minicat!"
+/**
+ * Minicat 启动需要初始化展开的一些操作
+ */
+public void start() throws Exception {
+    ServerSocket serverSocket = new ServerSocket(port);
+    System.out.println("=====>>> Minicat start on port：" + port);
+
+    while (true) {
+        Socket socket = serverSocket.accept();
+
+        // 获取输出流
+        OutputStream outputStream = socket.getOutputStream();
+
+        String data = "Hello Minicat!";
+        String responseText = HttpProtocolUtil.getHttpHeader200(data.getBytes().length) + data;
+        outputStream.write(responseText.getBytes());
+        socket.close();
+    }
+}
+```
+
+
+
+## Minicat 2.0 版本：封装Request和Response对象，返回html静态资源文件
+
+```Java
+// Minicat 2.0版本：封装Request和Response对象，返回html静态资源文件
+// http://localhost:8082/index.html
+/**
+ * Minicat 启动需要初始化展开的一些操作
+ */
+public void start() throws Exception {
+    ServerSocket serverSocket = new ServerSocket(port);
+    System.out.println("=====>>> Minicat start on port：" + port);
+
+    while (true) {
+        Socket socket = serverSocket.accept();
+        InputStream inputStream = socket.getInputStream();
+
+        // 封装Request对象和Response对象
+        Request request = new Request(inputStream);
+        Response response = new Response(socket.getOutputStream());
+
+        response.outputHtml(request.getUrl());
+        socket.close();
+    }
+}
+```
+
+
+
+## Minicat 3.0 版本：可以请求动态资源（Servlet）
+
+```java
+// Minicat 3.0版本：可以请求动态资源（Servlet）
+// http://localhost:8083/index.html
+/**
+ * Minicat 启动需要初始化展开的一些操作
+ */
+public void start() throws Exception {
+    // 加载解析相关的配置，web.xml
+    loadServlet();
+
+    ServerSocket serverSocket = new ServerSocket(port);
+    System.out.println("=====>>> Minicat start on port：" + port);
+
+    while (true) {
+        Socket socket = serverSocket.accept();
+        InputStream inputStream = socket.getInputStream();
+
+        // 封装Request对象和Response对象
+        Request request = new Request(inputStream);
+        Response response = new Response(socket.getOutputStream());
+
+        // 静态资源处理
+        if (servletMap.get(request.getUrl()) == null) {
+            response.outputHtml(request.getUrl());
+        } else {
+            // 动态资源servlet请求
+            HttpServlet httpServlet = servletMap.get(request.getUrl());
+            httpServlet.service(request, response);
+        }
+
+        socket.close();
+    }
+}
+```
+
+
+
+## Minicat 4.0 版本：多线程改造（不使用线程池）
+
+```java
+// Minicat 4.0版本：多线程改造（不使用线程池）
+// http://localhost:8084/index.html
+/**
+ * Minicat 启动需要初始化展开的一些操作
+ */
+public void start() throws Exception {
+    // 加载解析相关的配置，web.xml
+    loadServlet();
+
+    ServerSocket serverSocket = new ServerSocket(port);
+    System.out.println("=====>>> Minicat start on port：" + port);
+
+    // 多线程改造（不使用线程池）
+    while (true) {
+        Socket socket = serverSocket.accept();
+        RequestProcessor requestProcessor = new RequestProcessor(socket, servletMap);
+        requestProcessor.start();
+    }
+}
+```
+
+
+
+## Minicat 5.0 版本：多线程改造（使用线程池）
+
+```java
+// Minicat 5.0版本：多线程改造（使用线程池）
+// http://localhost:8085/index.html
+
+/**
+ * Minicat 启动需要初始化展开的一些操作
+ */
+public void start() throws Exception {
+    // 加载解析相关的配置，web.xml
+    loadServlet();
+
+    ServerSocket serverSocket = new ServerSocket(port);
+    System.out.println("=====>>> Minicat start on port：" + port);
+
+    // 定义一个线程池
+    int corePoolSize = 10;
+    int maximumPoolSize = 50;
+    long keepAliveTime = 100L;
+    TimeUnit unit = TimeUnit.SECONDS;   // 单位：秒
+    BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(50);   // 请求队列（长度50）
+    ThreadFactory threadFactory = Executors.defaultThreadFactory();             // 线程工厂
+    RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();    // 拒绝策略
+
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+            corePoolSize,
+            maximumPoolSize,
+            keepAliveTime,
+            unit,
+            workQueue,
+            threadFactory,
+            handler
+    );
+
+    // 多线程改造（使用线程池）
+    while (true) {
+        Socket socket = serverSocket.accept();
+        RequestProcessor requestProcessor = new RequestProcessor(socket, servletMap);
+        threadPoolExecutor.execute(requestProcessor);
+    }
+}
+```
+
 
 
 # 第四章 Tomcat 源码分析
@@ -621,23 +785,30 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
 ### （4）配置VM选项，加入source的配置
 
 ```properties
--Dcatalina.home=D:\SourceCode-TD\apache-tomcat-8.5.50-src\source
--Dcatalina.base=D:\SourceCode-TD\apache-tomcat-8.5.50-src\source
+-Dcatalina.home=E:\06_DevCode\GitHub_SourceTranslationTeam\apache-tomcat-8.5.50-src\source
+-Dcatalina.base=E:\06_DevCode\GitHub_SourceTranslationTeam\apache-tomcat-8.5.50-src\source
 -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
--Djava.util.logging.config.file=D:\SourceCode-TD\apache-tomcat-8.5.50-src\source\conf\logging.properties
+-Djava.util.logging.config.file=E:\06_DevCode\GitHub_SourceTranslationTeam\apache-tomcat-8.5.50-src\source\conf\logging.properties
 ```
 
 ![image-20210510160357681](image/image-20210510160357681.png)
 
 ### （5）初始化 Jsp 引擎
 
-- org/apache/catalina/startup/ContextConfig.java
 - 解决访问 http://localhost:8080/ 报错：org.apache.jasper.JasperException: Unable to compile class for JSP
 
 ```java
+// org/apache/catalina/startup/ContextConfig.java类中 configureStart 方法中添加下面的代码
+
 // 初始化jsp解析引擎-jasper
 context.addServletContainerInitializer(new JasperInitializer(), null);
 ```
+
+
+
+### （6）访问
+
+-  http://localhost:8080/
 
 
 
@@ -651,7 +822,11 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 
 
-## 4.3 源码解析
+## 3、源码解析
+
+
+
+
 
 
 
@@ -677,7 +852,7 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 ![image-20210514090052106](image/image-20210514090052106.png)
 
-```
+```java
 - 启动类加载器：作用不变
 - 扩展类加载器：作用不变
 - 系统类加载器：正常情况下加载的是 CLASSPATH 下的类，但是 Tomcat 的启动脚本并未使用，而是加载tomcat启动的类，如bootstrap.jar，通常在catalina.bat或者catalina.sh中指定（位于CATALINA_HOME/bin下）
@@ -885,11 +1060,11 @@ JAVA_OPTS="-XX:+UseConcMarkSweepGC"
 
 - 解决方案
 
-```java
-（1）修改 tomcat\bin\catalina.bat 
+```bash
+# 修改 tomcat\bin\catalina.bat 
 set "JAVA_OPTS=%JAVA_OPTS% %JSSE_OPTS%  -Dfile.encoding=UTF-8"
     
-（2）Tomcat重启, 清除浏览器缓存
+# Tomcat重启, 清除浏览器缓存
 ```
 
 
