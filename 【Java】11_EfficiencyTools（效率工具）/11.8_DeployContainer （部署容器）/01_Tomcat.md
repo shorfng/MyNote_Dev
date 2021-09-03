@@ -824,9 +824,25 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 ## 3、源码解析
 
+### 3.1 Tomcat 启动流程
+
+![image-20210904025051666](image/image-20210904025051666.png)
 
 
 
+### 3.2 Tomcat 请求处理流程
+
+- Tomcat Mapper 组件体系结构（完成url和Host、Context、Wrapper等容器的映射）
+
+![image-20210904025140577](image/image-20210904025140577.png)
+
+- 请求处理流程示意图
+
+![image-20210904025244467](image/image-20210904025244467.png)
+
+
+
+![image-20210904025222652](image/image-20210904025222652.png)
 
 
 
