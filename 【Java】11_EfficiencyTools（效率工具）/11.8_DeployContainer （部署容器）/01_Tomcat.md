@@ -861,39 +861,97 @@ context.addServletContainerInitializer(new JasperInitializer(), null);
 
 ## 2、Tomcat 类加载架构
 
-```
-- 为了支持上述目录结构，并对目录里面的类库进行加载和隔离，Tomcat自定义了多个类加载器
-- 这些类加载器按照经典的双亲委派模型来实现，如下图
-```
+### 2.1 双亲委派模型
 
 ![image-20210514090052106](image/image-20210514090052106.png)
+
+### 2.2 加载过程
 
 ```java
 - 启动类加载器：作用不变
 - 扩展类加载器：作用不变
+  
 - 系统类加载器：正常情况下加载的是 CLASSPATH 下的类，但是 Tomcat 的启动脚本并未使用，而是加载tomcat启动的类，如bootstrap.jar，通常在catalina.bat或者catalina.sh中指定（位于CATALINA_HOME/bin下）
+  
 - Common ClassLoader：通用类加载器加载 Tomcat 使用以及应用通用的一些类（位于CATALINA_HOME/lib下）
+  
 - Catalina ClassLoader：用于加载服务器内部可用类，这些类应用程序不能访问
+  
 - Shared ClassLoader：用于加载应用程序共享类，这些类服务器不会依赖
+  
 - Webapp ClassLoader：每个应用程序都会有一个独一无二的 Webapp ClassLoader，用来加载应用程序 /WEB-INF/classes 和 /WEB-INF/lib 下的类
-
-tomcat 8.5 默认改变了严格的双亲委派机制
-- 先从 Bootstrap Classloader加载指定的类
-- 如果未加载到，则从 /WEB-INF/classes加载
-- 如果未加载到，则从 /WEB-INF/lib/*.jar 加载
-- 如果未加载到，则依次从 System、Common、Shared 加载（在这最后一步，遵从双亲委派机制）
 ```
 
 
 
-# 第六章 Tomcat 性能优化
+### 2.3 tomcat 8.5 默认改变了严格的双亲委派机制
+
+```java
+步骤1：先从 Bootstrap Classloader加载指定的类
+
+步骤2：如果未加载到，加载 Webapp ClassLoader
+  - 如果未加载到，则从 /WEB-INF/classes加载
+  - 如果未加载到，则从 /WEB-INF/lib/*.jar 加载
+  
+步骤3如果未加载到，则依次从 System、Common、Shared 类加载器加载（在这最后一步，遵从双亲委派机制）
+```
+
+
+
+# 第六章 Tomcat 对 HTTPS的支持
+
+## 步骤1： JDK 中的 keytool 工具生成免费的秘钥库文件（证书）
+
+```sh
+cd xxx
+
+keytool -genkey -alias loto -keyalg RSA -keystore loto.keystore
+
+输入口令（自定义一个口令即可） 
+
+输入姓氏（即网站域名）
+
+输入组织单位名称
+
+输入组织名称
+
+输入市区或区域名称
+
+输入城市
+
+输入国家（CN）
+
+确认信息（输入Y）
+```
+
+
+
+## 步骤2：配置conf/server.xml
+
+```xml
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" maxThreads="150" schema="https" secure="true" SSLEnabled="true">
+ <SSLHostConfig>
+ 	<Certificate certificateKeystoreFile="/Users/apache-tomcat-8.5.50/conf/loto.keystore" certificateKeystorePassword="loto123" type="RSA"/>
+ </SSLHostConfig>
+</Connector>
+```
+
+
+
+## 步骤3：使用 https 协议访问8443端口
+
+- https://localhost:8443
+
+
+
+# 第七章 Tomcat 性能优化
 
 ## 0、系统性能的衡量指标
 
 - 响应时间：执行某个操作的耗时
 - 吞吐量：系统在给定时间内能够支持的事务数量
 
-```
+```java
 - 单位为TPS（Transactions PerSecond的缩写）也就是事务数/秒
 - 一个事务是指一个客户机向服务器发送请求然后服务器做出反应的过程
 ```
@@ -902,7 +960,7 @@ tomcat 8.5 默认改变了严格的双亲委派机制
 
 ## 1、Java 虚拟机运行优化
 
-```
+```java
 - 内存直接影响服务的运行效率和吞吐量
 - 垃圾回收机制会不同程度地导致程序运行中断（垃圾回收策略不同，垃圾回收次数和回收效率都是不同的）
 ```
@@ -910,6 +968,12 @@ tomcat 8.5 默认改变了严格的双亲委派机制
 
 
 ### 1.1 内存分配优化
+
+#### （1）JVM内存模型
+
+![image-20210905234503667](image/image-20210905234503667.png)
+
+#### （2）参数介绍
 
 | 参数                 | 参数作用                                | 优化建议                |
 | -------------------- | --------------------------------------- | ----------------------- |
@@ -921,10 +985,21 @@ tomcat 8.5 默认改变了严格的双亲委派机制
 | -XX:NewRatio         | 年轻代和老年代大小比值，取整数，默认2   | 不需要修改              |
 | -XX:SurvivorRatio    | Eden区与Survivor区大小比值，取整，默认8 | 不需要修改              |
 
-参数调整示例
+#### （3）参数调整示例
 
 ```shell
+# apache-tomcat-7.0.81/bin/catalina.sh 中配置
 JAVA_OPTS="-server -Xms2048m -Xmx2048m -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=512m"
+```
+
+#### （4）使用内存映射工具查看 Tomcat 中 jvm 内存配置
+
+```sh
+# 查看 java 进程编号
+ps -ef|grep tomcat
+
+# 使用内存映射工具查看 Tomcat 中 jvm 内存配置
+jhsdb jmap --heap --pid xxx
 ```
 
 
@@ -1070,7 +1145,7 @@ JAVA_OPTS="-XX:+UseConcMarkSweepGC"
 
 
 
-# 第七章 问题报错
+# 第八章 问题报错
 
 ## 1、Tomcat8.5.x, js中文乱码
 
