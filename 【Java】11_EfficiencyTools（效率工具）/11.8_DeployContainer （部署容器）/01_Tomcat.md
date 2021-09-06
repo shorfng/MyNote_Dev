@@ -1015,7 +1015,7 @@ jhsdb jmap --heap --pid xxx
 
 
 
-#### 垃圾收集器
+#### 垃圾收集器分类
 
 ##### （1）串行收集器（Serial Collector）
 
@@ -1066,9 +1066,14 @@ jhsdb jmap --heap --pid xxx
 | -XX:+UseConcMarkSweepGC（CMS） | 对于老年代，启用CMS垃圾收集器。 当并行收集器无法满足应用的延迟需求时，推荐使用CMS或G1收集器。启用该选项后， -XX:+UseParNewGC自动启用 |
 | -XX:+UseG1GC                   | 启用G1收集器。 G1是服务器类型的收集器， 用于多核、大内存的机器。它在保持高吞吐量的情况下，高概率满足GC暂停时间的目标 |
 
+
+
+#### 垃圾回收器配置
+
 - 在bin/catalina.sh的脚本中 , 追加如下配置 
 
 ```shell
+# 举例：切换为 GMS 收集器
 JAVA_OPTS="-XX:+UseConcMarkSweepGC"
 ```
 
@@ -1081,6 +1086,8 @@ JAVA_OPTS="-XX:+UseConcMarkSweepGC"
 - Connector 连接器使用线程池
 
 ![image-20210517111910830](image/image-20210517111910830.png)
+
+
 
 ### 2.2 调整 Tomcat 连接器
 
@@ -1106,8 +1113,17 @@ JAVA_OPTS="-XX:+UseConcMarkSweepGC"
 
 ### 2.4 调整 IO 模式
 
-- Tomcat8 之前的版本默认使用BIO（阻塞式IO），对于每一个请求都要创建一个线程来处理，不适合高并发
-- Tomcat8 以后的版本默认使用NIO模式（非阻塞式IO）
+- 调整的是 Connector 标签中的 protocol 属性
+
+（1）Tomcat8 之前的版本默认使用 BIO（阻塞式IO），对于每一个请求都要创建一个线程来处理，不适合高并发
+
+（2）Tomcat8 以后的版本默认使用 NIO 模式（非阻塞式IO）
+
+（3）当Tomcat并发性能有较⾼要求或者出现瓶颈时，可以尝试使⽤ APR 模式
+
+```
+APR（Apache PortableRuntime）是从操作系统级别解决异步IO问题，使⽤时需要在操作系统上安装APR和Native（因为APR原理是使⽤使⽤JNI技术调⽤操作系统底层的IO接⼝）
+```
 
 
 
