@@ -14,6 +14,57 @@
 
 ## 1、Docker - Tomcat安装和配置
 
+- Docker-Tomcat官网地址：https://hub.docker.com/_/tomcat
+
+  
+
+### 1.1 拉取镜像
+
+```shell
+docker pull tomcat:8.5.41-alpine
+```
+
+
+
+### 1.2 备份镜像
+
+```shell
+cd /docker_data/
+docker save tomcat:8.5.41-alpine -o tomcat:8.5.tar
+```
+
+
+
+### 1.3 导入镜像
+
+```shell
+docker load -i tomcat:8.5.tar
+```
+
+
+
+### 1.4 Linux 创建并运行容器
+
+#### （1）创建文件夹
+
+```shell
+# 创建三个文件夹，对应三个Tomcat挂载目录
+mkdir -p /docker_data/tomcat/{localtime,webapps}
+mkdir -p /docker_data/tomcat-8081/{localtime,webapps}
+mkdir -p /docker_data/tomcat-8082/{localtime,webapps}
+```
+
+#### （2）创建容器  
+
+```bash
+# 创建三个Tomcat容器
+docker run -itd --name tomcat -d -p 8080:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat/localtime:/etc/localtime -v /docker_data/tomcat/webapps:/usr/local/tomcat/webapps tomcat:8.5.41-alpine
+
+docker run -itd --name tomcat-8081 -d -p 8081:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8081/localtime:/etc/localtime -v /docker_data/tomcat-8081/webapps:/usr/local/tomcat/webapps tomcat:8.5.41-alpine
+
+docker run -itd --name tomcat-8082 -d -p 8082:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8082/localtime:/etc/localtime -v /docker_data/tomcat-8082/webapps:/usr/local/tomcat/webapps tomcat:8.5.41-alpine
+```
+
 
 
 ## 2、Linux系统 - Tomcat安装和配置
