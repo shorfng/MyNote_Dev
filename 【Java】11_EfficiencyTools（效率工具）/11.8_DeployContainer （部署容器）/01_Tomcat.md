@@ -6,9 +6,17 @@
 
 ## 0、Tomcat 下载
 
-- 官网地址：https://tomcat.apache.org/
+### （1）官网地址
+
+- https://tomcat.apache.org/
 
 ![image-20210429110647776](image/image-20210429110647776.png)
+
+### （2）Tomcat 与 JDK 版本
+
+- https://tomcat.apache.org/whichversion.html
+
+![image-20210907090947372](image/image-20210907090947372.png)
 
 
 
