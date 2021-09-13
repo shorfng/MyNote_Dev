@@ -10,7 +10,7 @@
 | [MyCode_JavaWeb_Server](https://github.com/shorfng/MyCode_JavaWeb_Server) | 【Java】06_JavaWeb_Server（服务器端）    |
 | [MyCode_JavaWeb_Framework](https://github.com/shorfng/MyCode_JavaWeb_Framework) | 【Java】07_JavaWeb_Framework（开源框架） |
 | MyCode_JavaExpert                                            | 【Java】08_JavaExpert（高阶）            |
-| MyCode_Distributed                                           | 【Java】09_Distributed（分布式）         |
+| [MyCode_Distributed](https://github.com/shorfng/MyCode_Distributed) | 【Java】09_Distributed（分布式）         |
 | MyCode_MicroService                                          | 【Java】10_MicroService（微服务）        |
 | MyCode_EfficiencyTools                                       | 【Java】11_EfficiencyTools（效率工具）   |
 
@@ -21,7 +21,7 @@
 
 ```java
 （1）部分类名/包名采用x_YzYz的方式，而非驼峰命名的方式，目的是为了区分和排序
-（2）项目JDK 1.8
+（2）项目JDK11
 ```
 
 
@@ -94,28 +94,36 @@
 
 ### 【Java】07_JavaWeb_Framework（开源框架）
 - JavaWeb_7.1_Mybatis3
+
 - JavaWeb_7.2_Spring5
+
 - JavaWeb_7.3_SpringMVC
 
+- JavaWeb_7.4_SpringDataJpa
 
+- JavaWeb_7.5_SpringBoot
+
+- Javaweb_7.6_SpringSecurity
+
+  
 
 ### 【Java】08_JavaExpert（高阶）
 
-- JavaExpert_8.1_JVM
+- 8.1_JVM
 
-- JavaExpert_8.2_Arithmetic（数据结构与算法）
+- 8.2_Arithmetic（数据结构与算法）
 
   
 
 ### 【Java】09_Distributed（分布式）
 
-- Distributed_9.0_Basic（分布式架构基础）
+- 9.0_DistributedBasic
 
 
 
 ### 【Java】10_MicroService（微服务）
 
-- MicroService_10.0_Basic（微服务架构基础）
+- 10.0_Basic（微服务架构基础）
 
 
 
@@ -147,6 +155,7 @@
   - Kubernetes（K8S）
 - 11.8_DeployContainer （部署容器）
   - Tomcat
+    - 11.1_MiniTomcat
 
 
 
