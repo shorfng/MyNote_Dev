@@ -1,12 +1,10 @@
-[TOC]
-
 # RuoYi（权限后台管理系统）
 
 - 基于SpringBoot、Shiro、Mybatis的权限后台管理系统
 
 
 
-# 1、开源框架简介
+# 1、简介
 
 ## 地址合集
 
@@ -29,43 +27,52 @@
 
 
 
-## 系统要求
+## 项目地址
 
-- JDK >= 1.8
-- MySQL >= 5.5
-- Maven >= 3.0
+- SpringBoot + Spring + MyBatis + Shiro + MySQL
+  - https://gitee.com/y_project/RuoYi
+
+- Spring Boot + Spring Cloud & Alibaba + Nacos + Redis + Sentinel + Seata + MySQL
+  - https://gitee.com/y_project/RuoYi-Cloud
+
+- SpringBoot + Spring + MyBatis + Shiro + Oracle
+  - https://github.com/yangzongzhuan/RuoYi-Oracle
+
+- Spring Boot + Spring Cloud & Alibaba + Nacos + Redis + Sentinel + Seata + Oracle
+  - https://github.com/yangzongzhuan/RuoYi-Cloud-Oracle
 
 
 
 ## 技术选型
 
-**1、系统环境**
+```java
+// 2021.08.04 
 
-- Java EE 8
-- Servlet 3.0
-- Apache Maven 3
+1、系统环境
+Java EE 8
+Servlet 3.0
+Apache Maven 3
 
-**2、主框架**
+2、主框架
+Spring Boot 2.2.x
+Spring Framework 5.2.x
+Apache Shiro 1.7
 
-- Spring Boot 2.0
-- Spring Framework 5.0
-- Apache Shiro 1.4
+3、持久层
+Apache MyBatis 3.5.x
+Hibernate Validation 6.0.x
+Alibaba Druid 1.2.x
 
-**3、持久层**
-
-- Apache MyBatis 3.4
-- Hibernate Validation 6.0
-- Alibaba Druid 1.1
-
-**4、视图层**
-
-- Bootstrap 3.3
-- Thymeleaf 3.0
+4、视图层
+Bootstrap 3.3.7
+Thymeleaf 3.0.x
+```
 
 
 
 ## 内置功能模块
 
+```
 - 用户管理：用户是系统操作者，该功能主要完成系统用户配置。
 - 部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
 - 岗位管理：配置系统用户所属担任职务。
@@ -83,13 +90,13 @@
 - 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
 - 在线构建器：拖动表单元素生成相应的HTML代码。
 - 连接池监视：监视当期系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
+```
 
 
 
 ## 主要特性
 
-
-
+```
 - 完全响应式布局（支持电脑、平板、手机等所有主流设备）
 - 强大的一键生成功能（包括控制器、模型、视图、菜单等）
 - 支持多数据源，简单配置即可实现切换。
@@ -99,14 +106,15 @@
 - Maven多项目依赖，模块及插件分项目，尽量松耦合，方便模块升级、增减模块。
 - 国际化支持，服务端及客户端支持
 - 完善的日志记录体系简单注解即可实现
+```
 
 
 
-# 2、开源框架运行部署
+# 2、运行部署
 
 ## 运行环境
 
-```text
+```java
 JDK >= 1.8 (推荐1.8版本)
 Mysql >= 5.5.0 (推荐5.7版本)
 Maven >= 3.0
@@ -114,22 +122,27 @@ Maven >= 3.0
 
 
 
-## 启动项目步骤
+## 启动项目
 
-```
-（1）下载项目源代码
-（2）创建数据库ry并导入数据脚本ry_20190215.sql，quartz.sql
-（3）运行com.ruoyi.RuoYiApplication.java
-（4）打开浏览器，输入：http://localhost:80 （默认账户 admin/admin123）
+- 下载项目源代码，导入编译器
+- 创建数据库 ry 并导入数据脚本 ry_2021xxxx.sql，quartz.sql
+- 运行com.ruoyi.RuoYiApplication.java
+- 打开浏览器，输入：http://localhost:80 （默认账户 admin/admin123）
 
-- 若能正确展示登录页面，并能成功登录，菜单及页面展示正常，则表明环境搭建成功
+```java
 - 建议使用Git克隆，因为克隆的方式可以和RuoYi随时保持更新同步。使用Git命令克隆
 git clone https://gitee.com/y_project/RuoYi.git
 ```
 
 
 
+## 部署项目
+
+
+
 # 3、项目介绍
+
+
 
 
 
