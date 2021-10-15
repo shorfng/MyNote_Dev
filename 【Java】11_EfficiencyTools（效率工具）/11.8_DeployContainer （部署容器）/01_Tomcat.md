@@ -32,16 +32,12 @@
 docker pull tomcat:8.5.41-alpine
 ```
 
-
-
 ### 1.2 备份镜像
 
 ```shell
 cd /docker_data/
 docker save tomcat:8.5.41-alpine -o tomcat:8.5.tar
 ```
-
-
 
 ### 1.3 导入镜像
 
@@ -56,21 +52,57 @@ docker load -i tomcat:8.5.tar
 #### （1）创建文件夹
 
 ```shell
-# 创建三个文件夹，对应三个Tomcat挂载目录
-mkdir -p /docker_data/tomcat/{localtime,webapps}
-mkdir -p /docker_data/tomcat-8081/{localtime,webapps}
-mkdir -p /docker_data/tomcat-8082/{localtime,webapps}
+# 创建文件夹，对应Tomcat挂载目录
+mkdir -p /docker_data/tomcat/{localtime,webapps,logs,conf}
+mkdir -p /docker_data/tomcat-8081/{localtime,webapps,logs,conf}
+mkdir -p /docker_data/tomcat-8082/{localtime,webapps,logs,conf}
 ```
 
 #### （2）创建容器  
 
 ```bash
+# 创建容器
+docker run -itd --name tomcat -d -p 8080:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat/localtime:/etc/localtime -v /docker_data/tomcat/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat/logs:/usr/local/tomcat/logs  tomcat:8.5.41-alpine
+
+# 复制配置文件
+docker cp tomcat:/usr/local/tomcat/conf/ /docker_data/tomcat
+
 # 创建三个Tomcat容器
-docker run -itd --name tomcat -d -p 8080:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat/localtime:/etc/localtime -v /docker_data/tomcat/webapps:/usr/local/tomcat/webapps tomcat:8.5.41-alpine
+docker run -itd --name tomcat -d -p 8080:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat/localtime:/etc/localtime -v /docker_data/tomcat/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat/logs:/usr/local/tomcat/logs -v /docker_data/tomcat/conf:/usr/local/tomcat/conf tomcat:8.5.41-alpine
 
-docker run -itd --name tomcat-8081 -d -p 8081:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8081/localtime:/etc/localtime -v /docker_data/tomcat-8081/webapps:/usr/local/tomcat/webapps tomcat:8.5.41-alpine
+docker run -itd --name tomcat-8081 -d -p 8081:8081 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8081/localtime:/etc/localtime -v /docker_data/tomcat-8081/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat-8081/logs:/usr/local/tomcat/logs -v /docker_data/tomcat-8081/conf:/usr/local/tomcat/conf  tomcat:8.5.41-alpine
 
-docker run -itd --name tomcat-8082 -d -p 8082:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8082/localtime:/etc/localtime -v /docker_data/tomcat-8082/webapps:/usr/local/tomcat/webapps tomcat:8.5.41-alpine
+docker run -itd --name tomcat-8082 -d -p 8082:8082 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8082/localtime:/etc/localtime -v /docker_data/tomcat-8082/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat-8082/logs:/usr/local/tomcat/logs -v /docker_data/tomcat-8082/conf:/usr/local/tomcat/conf  tomcat:8.5.41-alpine
+```
+
+
+
+### 1.5 Mac 创建并运行容器
+
+#### （1）创建文件夹
+
+```shell
+# 创建文件夹，对应Tomcat挂载目录
+mkdir -p /Users/td/Documents/03_DevTools/docker_data/tomcat/{localtime,webapps,logs,conf}
+mkdir -p /Users/td/Documents/03_DevTools/docker_data/tomcat-8081/{localtime,webapps,logs,conf}
+mkdir -p /Users/td/Documents/03_DevTools/docker_data/tomcat-8082/{localtime,webapps,logs,conf}
+```
+
+#### （2）创建容器  
+
+```bash
+# 创建容器
+docker run -itd --name tomcat -d -p 8080:8080 --privileged=true -e TZ="Asia/Shanghai" -v /Users/td/Documents/03_DevTools/docker_data/tomcat/localtime:/etc/localtime -v /Users/td/Documents/03_DevTools/docker_data/tomcat/webapps:/usr/local/tomcat/webapps -v /Users/td/Documents/03_DevTools/docker_data/tomcat/logs:/usr/local/tomcat/logs  tomcat:8.5.41-alpine
+
+# 复制配置文件
+docker cp tomcat:/usr/local/tomcat/conf/ /Users/td/Documents/03_DevTools/docker_data/tomcat
+
+# 创建三个Tomcat容器
+docker run -itd --name tomcat -d -p 8080:8080 --privileged=true -e TZ="Asia/Shanghai" -v /Users/td/Documents/03_DevTools/docker_data/tomcat/localtime:/etc/localtime -v /Users/td/Documents/03_DevTools/docker_data/tomcat/webapps:/usr/local/tomcat/webapps -v /Users/td/Documents/03_DevTools/docker_data/tomcat/logs:/usr/local/tomcat/logs -v /Users/td/Documents/03_DevTools/docker_data/tomcat/conf:/usr/local/tomcat/conf tomcat:8.5.41-alpine
+
+docker run -itd --name tomcat-8081 -d -p 8081:8081 --privileged=true -e TZ="Asia/Shanghai" -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8081/localtime:/etc/localtime -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8081/webapps:/usr/local/tomcat/webapps -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8081/logs:/usr/local/tomcat/logs -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8081/conf:/usr/local/tomcat/conf  tomcat:8.5.41-alpine
+
+docker run -itd --name tomcat-8082 -d -p 8082:8082 --privileged=true -e TZ="Asia/Shanghai" -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8082/localtime:/etc/localtime -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8082/webapps:/usr/local/tomcat/webapps -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8082/logs:/usr/local/tomcat/logs -v /Users/td/Documents/03_DevTools/docker_data/tomcat-8082/conf:/usr/local/tomcat/conf  tomcat:8.5.41-alpine
 ```
 
 
