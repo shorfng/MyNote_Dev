@@ -70,9 +70,9 @@ docker cp tomcat:/usr/local/tomcat/conf/ /docker_data/tomcat
 # 创建三个Tomcat容器
 docker run -itd --name tomcat -d -p 8080:8080 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat/localtime:/etc/localtime -v /docker_data/tomcat/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat/logs:/usr/local/tomcat/logs -v /docker_data/tomcat/conf:/usr/local/tomcat/conf tomcat:8.5.41-alpine
 
-docker run -itd --name tomcat-8081 -d -p 8081:8081 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8081/localtime:/etc/localtime -v /docker_data/tomcat-8081/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat-8081/logs:/usr/local/tomcat/logs -v /docker_data/tomcat-8081/conf:/usr/local/tomcat/conf  tomcat:8.5.41-alpine
+docker run -itd --name tomcat-8081 -d -p 8081:8081 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8081/localtime:/etc/localtime -v /docker_data/tomcat-8081/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat-8081/logs:/usr/local/tomcat/logs -v /docker_data/tomcat-8081/conf:/usr/local/tomcat/conf tomcat:8.5.41-alpine
 
-docker run -itd --name tomcat-8082 -d -p 8082:8082 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8082/localtime:/etc/localtime -v /docker_data/tomcat-8082/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat-8082/logs:/usr/local/tomcat/logs -v /docker_data/tomcat-8082/conf:/usr/local/tomcat/conf  tomcat:8.5.41-alpine
+docker run -itd --name tomcat-8082 -d -p 8082:8082 --privileged=true -e TZ="Asia/Shanghai" -v /docker_data/tomcat-8082/localtime:/etc/localtime -v /docker_data/tomcat-8082/webapps:/usr/local/tomcat/webapps -v /docker_data/tomcat-8082/logs:/usr/local/tomcat/logs -v /docker_data/tomcat-8082/conf:/usr/local/tomcat/conf tomcat:8.5.41-alpine
 ```
 
 
