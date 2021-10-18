@@ -1298,9 +1298,36 @@ docker network inspect bridge
 
 ## 5.1 数据卷
 
+
+
 ## 5.2 数据卷容器
 
-## 5.3 docker-compose
+
+
+## 5.3 docker-compose 安装
+
+```bash
+# 安装扩展源
+sudo yum -y install epel-release
+
+# 安装python-pip模块
+sudo yum install python-pip
+
+# 通过以命令进行安装
+cd /usr/local/bin/
+wget https://github.com/docker/compose/releases/download/1.14.0-rc2/docker-compose-Linux-x86_64
+rename docker-compose-Linux-x86_64 docker-compose docker-compose-Linux-x86_64
+chmod +x /usr/local/bin/docker-compose
+
+# 查看版本
+docker-compose version
+```
+
+
+
+## 5.4 docker-compose.yml 配置解析
+
+https://blog.csdn.net/qq_36148847/article/details/79427878
 
 
 
