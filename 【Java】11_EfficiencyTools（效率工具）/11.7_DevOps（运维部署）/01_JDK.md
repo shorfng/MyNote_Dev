@@ -54,6 +54,7 @@ rpm -e --nodeps java-1.6.0-openjdk-1.6.0.0-1.66.1.13.0.el6.x86_64rpm -e --nodeps
 cd /root/
 
 # 解压JDK到/usr/local目录下
+tar -zxvf jdk-11.0.13_linux-x64_bin.tar.gz
 tar -zxvf Linux_JDK_8u171_x64.tar.gz -C /usr/local/
 
 # 配置JDK环境变量
@@ -61,9 +62,13 @@ vi /etc/profile
 
 # 将配置拷贝到最后一行
 # set java environment
+export JAVA_HOME=/usr/local/jdk-11.0.13
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$PATH:$JAVA_HOME/bin
+
 export JAVA_HOME=/usr/local/jdk1.8.0_171
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
-export PATH=$JAVA_HOME/bin:$
+export PATH=$PATH:$JAVA_HOME/bin
 
 # 退出vim
 :wq
@@ -91,7 +96,7 @@ vi /etc/profile
 # 配置
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
-export PATH=$JAVA_HOME/bin:$
+export PATH=$PATH:$JAVA_HOME/bin
 
 # 使配置生效
 source /etc/profile
