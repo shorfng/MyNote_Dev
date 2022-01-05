@@ -1,1 +1,1 @@
-> 当前位置：【Java】12_EfficiencyTools（效率工具） -> 12.1_DevTools（开发工具） ->  02_DataGrip安装和使用
+> 当前位置：【Java】11_EfficiencyTools（效率工具） -> 11.1_DevTools（开发工具） ->  02_DataGrip安装和使用

@@ -1,6 +1,6 @@
->当前位置：【Java】12_EfficiencyTools（效率工具） -> 12.1_DevTools（开发工具） ->  01_IDEA安装和配置
+>当前位置：【Java】11_EfficiencyTools（效率工具） -> 11.1_DevTools（开发工具） ->  01_IDEA安装和配置
 
-[toc]
+
 
 - 本文截图为IDEA版本为2020.3，使用了官方中文插件
 
