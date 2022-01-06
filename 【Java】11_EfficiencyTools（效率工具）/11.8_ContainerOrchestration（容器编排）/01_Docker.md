@@ -28,21 +28,26 @@ https://github.com/docker/docker-ce
 
 ```shell
 cat /etc/centos-release
+
+centos7.8
 ```
 
 #### （2）配置阿里云yum源
 
 ```shell
 # 1.下载安装
-wget yum install -y wget
+yum install -y wget
 
 # 2.备份默认的
-yum mv /etc/yum.repos.d /etc/yum.repos.d.backup
+cd /etc/yum.repos.d
+mv /etc/yum.repos.d /etc/yum.repos.d.backup
 
 # 3.设置新的 yum 目录 
 mkdir -p /etc/yum.repos.d
+cd /etc/yum.repos.d
 
 # 4.下载阿里 yum 配置到该目录中，选择对应版本 
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 
 # 5.更新 epel 源为阿里云epel源 
@@ -68,6 +73,7 @@ grep initrd16 /boot/grub2/grub.cfg
 grub2-set-default 0
 
 # 重启虚拟机
+reboot
 
 # 查看 centos 系统内核信息
 # 简单信息
@@ -102,7 +108,8 @@ vi /etc/sysctl.conf
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 net.bridge.bridge-nf-call-arptables = 1
-net.ipv4.ip_forward=1 net.ipv4.ip_forward_use_pmtu = 0
+net.ipv4.ip_forward=1 
+net.ipv4.ip_forward_use_pmtu = 0
 
 # 使命令生效
 sysctl --system
@@ -175,14 +182,14 @@ systemctl status docker
 
 ```shell
 # 安装阿里云镜像加速器（整体粘贴命令执行）
-mkdir -p /etc/docker
-tee /etc/docker/daemon.json <<-'EOF' 
-{ 
-	"registry-mirrors": ["https://a4cj7wl8.mirror.aliyuncs.com"] 
+sudo mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["https://a4cj7wl8.mirror.aliyuncs.com"]
 }
 EOF
-systemctl daemon-reload
-systemctl restart docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 
 # 设置 docker 开机启动服务
 systemctl enable docker
@@ -199,6 +206,13 @@ docker version
 
 # docker 运行信息
 docker info
+
+# 查看 docker 状态
+# Active: active (running)  表示正在运行
+systemctl status docker
+
+# 强制重启 docker
+systemctl reset-failed docker.service
 ```
 
 
@@ -1402,6 +1416,7 @@ docker run -d --restart=always --name portainer -p 9000:9000 -v /var/run/docker.
 
 # 访问地址（admin/admin1234）
 http://192.168.203.128:9000
+
 ```
 
 
