@@ -112,7 +112,7 @@
 
   
 
-### 【Java】08_JavaExpert（高阶）
+### 【Java】08_JavaExpert（Java 高阶）
 
 - 8.1_Arithmetic（数据结构与算法）
 
@@ -160,13 +160,13 @@
 - 11.3_VcsTools（源码管理工具）
   - Git和GitLab
   - Subversion（SVN）
-- 1.4_CodeQualityTools（代码质量管理工具）
+- 11.4_CodeQualityTools（代码质量管理工具）
   - SonarQube
 - 11.5_UTTools（测试工具）
   - JMeter
   - PostMan
   - SoapUI
-- 12.6_CITools（持续集成工具）
+- 11.6_CITools（持续集成工具）
   - Hudson
   - Jenkins
 - 11.7_DevOps（运维部署）
