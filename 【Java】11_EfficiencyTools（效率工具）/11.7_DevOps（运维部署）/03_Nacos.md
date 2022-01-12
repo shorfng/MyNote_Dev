@@ -11,6 +11,81 @@
 
 # 1、Docker -  Nacos 安装和配置
 
+## 1.1 Linux 系统
+
+```shell
+# 获取镜像
+docker pull nacos/nacos-server:1.4.2
+
+# 创建配置文件和日志文件目录
+mkdir -p /docker_data/nacos/init.d
+mkdir -p /docker_data/nacos/logs
+mkdir -p /docker_data/nacos/data
+mkdir -p /docker_data/nacos/conf
+
+cd /docker_data/nacos/init.d
+touch custom.properties
+
+# 在 custom.properties 文件中填写配置
+management.endpoints.web.exposure.include=*
+```
+
+- 启动容器，方式1，使用配置文件连接mysql
+
+```bash
+# application.properties
+cd /docker_data/nacos/conf
+touch application.properties
+
+# 在 application.properties 文件中填写配置
+### If use MySQL as datasource:
+spring.datasource.platform=mysql
+
+### Count of DB:
+db.num=1
+
+### Connect URL of DB:
+db.url.0=jdbc:mysql://xxxx:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+db.user=root
+db.password=8CJMt^5%RTOhTnCEF6
+
+# 创建并启动容器（单机模式）
+docker run -itd \
+-p 8848:8848 \
+-e MODE=standalone \
+-v /docker_data/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties \
+-v /docker_data/nacos/logs:/home/nacos/logs \
+-v /docker_data/nacos/data:/home/nacos/data \
+-v /docker_data/nacos/conf/application.properties:/home/nacos/conf/application.properties \
+--restart always \
+--name nacos \
+nacos/nacos-server:1.4.2
+```
+
+- 启动容器，方式2，使用命令连接mysql
+
+```bash
+docker run -itd \
+-p 8848:8848 \
+-e MODE=standalone \
+-e SPRING_DATASOURCE_PLATFORM=mysql \
+-e MYSQL_SERVICE_HOST=xxxxx \
+-e MYSQL_SERVICE_PORT=3306 \
+-e MYSQL_SERVICE_USER=root \
+-e MYSQL_SERVICE_PASSWORD=8CJMt^5%RTOhTnCEF6 \
+-e MYSQL_SERVICE_DB_NAME=nacos \
+-v /docker_data/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties \
+-v /docker_data/nacos/logs:/home/nacos/logs \
+-v /docker_data/nacos/data:/home/nacos/data \
+--restart always \
+--name nacos \
+nacos/nacos-server:1.4.2
+```
+
+
+
+## 1.2 Mac 系统
+
 ```shell
 # 获取镜像
 docker pull nacos/nacos-server:1.4.2
@@ -38,13 +113,13 @@ docker run -itd \
 -v /Users/td/Documents/03_DevTools/docker_data/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties \
 -v /Users/td/Documents/03_DevTools/docker_data/nacos/logs:/home/nacos/logs \
 -v /Users/td/Documents/03_DevTools/docker_data/nacos/data:/home/nacos/data \
+-v /Users/td/Documents/03_DevTools/docker_data/nacos/conf:/home/nacos/conf \
 --restart always \
 --name nacos \
 nacos/nacos-server:1.4.2
-
 ```
 
-http://localhost:8848/nacos/#/login
+- http://localhost:8848/nacos/#/login
 
 
 
@@ -72,7 +147,14 @@ cd /usr/local/
 ### 步骤2：数据库脚本执行
 
 ```shell
-新建本地数据库 Nacos，执行 conf/nacos-mysql.sql 文件
+# 新建本地数据库 Nacos
+# 创建数据库
+CREATE database if NOT EXISTS `nacos` default character set utf8mb4 collate utf8mb4_unicode_ci;
+
+# 选择数据库
+use `nacos`;
+
+# 执行 conf/nacos-mysql.sql 文件
 ```
 
 
