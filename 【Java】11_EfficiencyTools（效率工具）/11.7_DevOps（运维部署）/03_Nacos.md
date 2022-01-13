@@ -47,7 +47,7 @@ db.num=1
 ### Connect URL of DB:
 db.url.0=jdbc:mysql://xxxx:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
 db.user=root
-db.password=8CJMt^5%RTOhTnCEF6
+db.password=xxxxx
 
 # 创建并启动容器（单机模式）
 docker run -itd \
@@ -72,7 +72,7 @@ docker run -itd \
 -e MYSQL_SERVICE_HOST=xxxxx \
 -e MYSQL_SERVICE_PORT=3306 \
 -e MYSQL_SERVICE_USER=root \
--e MYSQL_SERVICE_PASSWORD=8CJMt^5%RTOhTnCEF6 \
+-e MYSQL_SERVICE_PASSWORD=xxxxxx \
 -e MYSQL_SERVICE_DB_NAME=nacos \
 -v /docker_data/nacos/init.d/custom.properties:/home/nacos/init.d/custom.properties \
 -v /docker_data/nacos/logs:/home/nacos/logs \
