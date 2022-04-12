@@ -1,189 +1,160 @@
 # GitHub仓库代码
 
-| 仓库名称                                                     | 涵盖内容                                 |
-| ------------------------------------------------------------ | ---------------------------------------- |
-| [MyCode_JavaDev](https://github.com/shorfng/MyCode_JavaDev)  | 【Java】01_JavaBasics（Java基础）        |
-|                                                              | 【Java】02_JavaReinforce（Java加强）     |
-|                                                              | 【Java】03_JavaInterface（Java界面）     |
-| [MyCode_JavaWeb_Front](https://github.com/shorfng/MyCode_JavaWeb_Front) | 【Java】04_JavaWeb_Front（前端）         |
-| [MyCode_JavaWeb_Database](https://github.com/shorfng/MyCode_JavaWeb_Database) | 【Java】05_JavaWeb_Database（数据库）    |
-| [MyCode_JavaWeb_Server](https://github.com/shorfng/MyCode_JavaWeb_Server) | 【Java】06_JavaWeb_Server（服务器端）    |
-| [MyCode_JavaWeb_Framework](https://github.com/shorfng/MyCode_JavaWeb_Framework) | 【Java】07_JavaWeb_Framework（开源框架） |
-| MyCode_JavaExpert                                            | 【Java】08_JavaExpert（高阶）            |
-| [MyCode_Distributed](https://github.com/shorfng/MyCode_Distributed) | 【Java】09_Distributed（分布式）         |
-| [MyCode_MicroService](https://github.com/shorfng/MyCode_MicroService) | 【Java】10_MicroService（微服务）        |
-| [MyCode_EfficiencyTools](https://github.com/shorfng/MyCode_EfficiencyTools) | 【Java】11_EfficiencyTools（效率工具）   |
-
-
+| 仓库名称                                                     | 涵盖内容                              |
+| ------------------------------------------------------------ | ------------------------------------- |
+| [JavaCode_Algorithm](https://github.com/shorfng/JavaCode_Algorithm) | 数据结构与算法                        |
+| [JavaCode_Basics](https://github.com/shorfng/JavaCode_Basics) | 【Java】01_Basics（基础）             |
+| [JavaCode_Pattern](https://github.com/shorfng/JavaCode_Pattern) | 【Java】02_Pattern（设计模式）        |
+| [JavaCode_JVM](https://github.com/shorfng/JavaCode_JVM)      | 【Java】03_JVM                        |
+| [JavaCode_MultiThread](https://github.com/shorfng/JavaCode_MultiThread) | 【Java】04_MultiThread（并发多线程）  |
+| [JavaCode_Database](https://github.com/shorfng/JavaCode_Database) | 【Java】05_Database（数据库）         |
+| [JavaCode_Cache](https://github.com/shorfng/JavaCode_Cache)  | 【Java】06_Cache（缓存）              |
+| [JavaCode_Front](https://github.com/shorfng/JavaCode_Front)  | 【Java】07_Front（前端）              |
+| [JavaCode_JavaWeb](https://github.com/shorfng/JavaCode_JavaWeb) | 【Java】08_JavaWeb（前后端交互）      |
+| [JavaCode_Framework](https://github.com/shorfng/JavaCode_Framework) | 【Java】09_Framework（开源框架）      |
+| [JavaCode_Distributed](https://github.com/shorfng/JavaCode_Distributed) | 【Java】10_Distributed（分布式架构）  |
+| [JavaCode_MicroService](https://github.com/shorfng/JavaCode_MicroService) | 【Java】11_MicroService（微服务架构） |
+| [JavaCode_Container](https://github.com/shorfng/JavaCode_Container) | 【Java】12_Container（容器）          |
 
 # JavaCode 目录
 - 写在前面
 
 ```java
 （1）部分类名/包名采用x_YzYz的方式，而非驼峰命名的方式，目的是为了区分和排序
-（2）项目JDK11
+（2）项目部分采用 jdk8 和 jdk11，详细请看各个项目的 pom.xml
 ```
 
 
 
-### 【Java】01_Java_Basics（Java基础）
+### JavaCode_Basics（基础）
 - Java_1.1_Grammar（基础语法）
 - Java_1.2_Oriented（面向对象）
 - Java_1.3_Exception（异常处理）
 - Java_1.4_API（常用API）
 - Java_1.5_Collections（集合框架）
-- Java_1.6_IO（IO流）
-- Java_1.7_NewFeatures（Java新特性）
+- Java_1.6_Annotation（注解）
+- Java_1.7_Reflect（反射）
+- Java_1.8_IO（IO流）
+- Java_1.9_Socket（网络编程）
+- Java_1.10_NewFeatures（Java新特性）
+
+### JavaCode_Pattern（设计模式）
+
+- Java_2.0_Principle（软件架构设计原则）
+- Java_2.1_CreativePatterns（创建型）
+- Java_2.2_StructuralPatterns（结构型）
+- Java_2.3_BehavioralPatterns（行为型）
+
+### JavaCode_JVM
+- 
+
+### JavaCode_MultiThread（并发多线程）
+
+- 
+
+### JavaCode_Database（数据库）
+
+- Java_5.1_MySQL
+- Java_5.2_MongoDB
+- Java_5.3_Neo4j（图数据库）
+- Java_5.4_Oracle
+
+### JavaCode_Cache（缓存）
+
+- Java_6.1_Redis
+- Java_6.2_EhCache
+- Java_6.3_Memcache
+
+### JavaCode_Front（前端）
+- Front_7.1_HTML
+- Front_7.2_CSS
+- Front_7.3_Javascript
+- Front_7.4_jQuery
+- Front_7.5_BootStrap
+- Front_7.6_Layui（前端框架）
+
+### JavCode_JavaWeb（前后端交互）
+
+- JavaWeb_8.1_HTTP（超文本传输协议）
+
+- JavaWeb_8.2_XML（可扩展的标记语言）
+- JavaWeb_8.3_JSON（数据交换格式）
+- JavaWeb_8.4_Servlet
+
+- JavaWeb_8.5_Ajax（异步JS和XML）
+
+- JavaWeb_8.6_JSP（Java服务器页面）
+
+### JavaCode_Framework（开源框架）
+
+- Java_9.1_Struts 2
+- Java_9.2_Hibernate 5
+
+- Java_9.3_Mybatis3
+
+- Java_9.4_Spring5
+
+- Java_9.5_SpringMVC
+
+- Java_9.6_SpringDataJpa
+
+- Java_9.7_SpringBoot
+
+- Java_9.8_SpringSecurity
+
+- Java_9.9_SpringWebFlux
+
+- Java_9.10_Quartz（任务调度框架）
 
 
+### JavaCode_Distributed（分布式架构）
 
-### 【Java】02_Java_Reinforce（Java加强）
-- Java_2.1_ClassLoader（类加载器）
-- Java_2.2_Reflect（反射）
-- Java_2.3_JavaDelegate（Java代理）
-- Java_2.4_Annotation（注解）
-- Java_2.5_MultiThread（多线程）
-- Java_2.6_Socket（网络编程）
-- Java_2.7_Pattern（设计模式）
-- Java_2.8_Junit（单元测试）
+- Java_10.0_DistributedBasic（分布式架构基础）
+- Java_10.1_Netty（分布式网络通信）
+- Java_10.3_Zookeeper（分布式协调服务）
+- Java_10.4_Dubbo
+- Java_10.5_Elastic-JOB（分布式任务调度框架）
+- Java_10.6_XXL-JOB（分布式任务调度框架）
+- Java_10.7_RabbitMQ（分布式消息中间件）
+- Java_10.8_RocketMQ（分布式消息中间件）
+- Java_10.9_Kafka（分布式消息中间件）
+- Java_10.10_ElasticSearch（分布式搜索引擎）
 
+### JavaCode_MicroService（微服务）
 
+- SpringCloud_Netflix
+- SpringCloud_Alibaba
 
-### 【Java】03_Java_Interface（Java界面） - 目前没有代码
-- Java_3.1_AWT
-- Java_3.2_事件机制
-- Java_3.3_Swing
-- Java_3.4_GUI
+### JavaCode_Container（容器）
 
+- Java_12.1_MiniTomcat
 
-
-### 【Java】04_JavaWeb_Front（前端）
-- JavaWeb_4.1_HTML
-- JavaWeb_4.2_CSS
-- JavaWeb_4.3_Javascript
-- JavaWeb_4.4_jQuery
-- JavaWeb_4.4_jQuery_EasyUI
-- JavaWeb_4.4_jQuery_OCUpload
-- JavaWeb_4.4_jQuery_ZTree
-- JavaWeb_4.5_BootStrap
-- JavaWeb_4.6_Layui（前端框架）
+- Java_12.2_Docker-Compose
 
 
+### Tools（工具）
 
-### 【Java】05_JavaWeb_Database（数据库）
-- JavaWeb_5.0_DatabaseBasic（数据库基础）
-- JavaWeb_5.2_MySQL
-- JavaWeb_5.2_Redis
-- JavaWeb_5.3_Oracle
-- JavaWeb_5.4_MongoDB
-- JavaWeb_5.5_Neo4j（图数据库）
-
-
-
-### 【Java】06_JavaWeb_Server（服务器端）
-- JavaWeb_6.1_XML（可扩展的标记语言）
-- JavaWeb_6.2_HTTP（超文本传输协议）
-- JavaWeb_6.3_Application Server（应用服务器） - 不需要建项目
-- JavaWeb_6.4_Servlet
-- JavaWeb_6.4_Servlet_Listener（监听器）
-- JavaWeb_6.4_Servlet_Filter（过滤器）
-- JavaWeb_6.5_JSP（Java服务器页面）
-- JavaWeb_6.6_JSON（数据交换格式）
-- JavaWeb_6.7_Ajax（异步JS和XML）
-
-
-
-### 【Java】07_JavaWeb_Framework（开源框架）
-- JavaWeb_7.1_Mybatis3
-
-- JavaWeb_7.2_Spring5
-
-- JavaWeb_7.3_SpringMVC
-
-- JavaWeb_7.4_SpringDataJpa
-
-- JavaWeb_7.5_SpringBoot
-
-- Javaweb_7.6_SpringSecurity
-
-- Javaweb_7.7_SpringWebFlux
-
-- Javaweb_7.8_Quartz（任务调度框架）
-
-  
-
-### 【Java】08_JavaExpert（Java 高阶）
-
-- 8.1_Arithmetic（数据结构与算法）
-
-- 8.2_ConcurrentProgramming（并发编程）
-
-- 8.3_JVM（虚拟机）
-
-  
-
-### 【Java】09_Distributed（分布式）
-
-- 9.0_DistributedBasic（分布式架构基础）
-- 9.1_IO
-- 9.2_Netty（分布式网络通信）
-- 9.3_Nginx（高性能Web容器）
-- 9.4_Zookeeper（分布式协调服务）
-- 9.5_Dubbo
-- 9.6_Elastic-JOB（分布式任务调度框架）
-- 9.7_XXL-JOB（分布式任务调度框架）
-- 9.8_RabbitMQ（分布式消息中间件）
-- 9.9_RocketMQ（分布式消息中间件）
-- 9.10_Kafka（分布式消息中间件）
-- 9.11_ElasticSearch（分布式搜索引擎）
-
-
-
-### 【Java】10_MicroService（微服务）
-
-- 10.0_MicroServiceBasic（微服务架构基础）
-- 10.1_SpringCloud
-- 10.2_SpringCloud_Netflix
-- 10.3_SpringCloud_Alibaba
-
-
-
-### 【Java】11_EfficiencyTools（效率工具）
-
-- 11.1_DevTools（开发工具）
+- DevTools（开发工具）
+  - JDK
   - IDEA
   - DataGrip
-- 11.2_BuildTools（项目构建工具）
+
+- BuildTools（项目构建工具）
   - Maven
   - Gradle
   - Ant
-- 11.3_VcsTools（源码管理工具）
+- VcsTools（源码管理工具）
   - Git和GitLab
   - Subversion（SVN）
-- 11.4_CodeQualityTools（代码质量管理工具）
+- CodeQualityTools（代码质量管理工具）
   - SonarQube
-- 11.5_UTTools（测试工具）
+- UTTools（测试工具）
   - JMeter
   - PostMan
   - SoapUI
-- 11.6_CITools（持续集成工具）
+- DevOps（运维部署）
   - Hudson
   - Jenkins
-- 11.7_DevOps（运维部署）
-  - JDK
-  - Tomcat
-  - Nacos
-- 11.8_ContainerOrchestration（容器编排）
-  - Docker
-  - Kubernetes（K8S）
-
-
-
-
-### 【Java】12_拓展技能
-
-- 12.1_UML工具
-- 12.2_Fiddler（抓包工具）
 
 
 
