@@ -414,24 +414,21 @@ Maximum heep… 最大堆栈
 
 # 9、插件
 
-### Chinese (Simplified) Language Pack
+| 名称                               | 作者          | 用途                                                 |
+| ---------------------------------- | ------------- | ---------------------------------------------------- |
+| Chinese (Simplified) Language Pack | JetBrains     | idea官方中文汉化包，2020.1版本以上才能在插件库中搜到 |
+| .ignore                            | JetBrains     | 版本控制忽略文件管理                                 |
+| maven-dependency-helper            | yiyingcanfeng | 快速搜索maven依赖版本（快捷键：Ctrl+Shift+D）        |
 
-```
-- idea官方中文汉化包
-- 需要2020.1版本以上才能在插件库中搜到
-```
+
+
+
 
 
 
 ![简单演示 功能远不止于此](image/6b0879cc869a45b4b5565f370c88741a~tplv-k3u1fbpfcp-zoom-1.image)
 
 
-
-### .ignore
-
-```
-- 快速生成git的忽略文件
-```
 
 
 
