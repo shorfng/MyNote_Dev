@@ -1,6 +1,6 @@
 > 当前位置：【Java】13_Tools（工具）-> 13.2_BuildTools（项目构建工具） -> 01_Maven
 
-# Maven 下载安装和配置
+# 第一章 Maven 下载安装和配置
 
 ## 0、Maven 下载
 
@@ -42,12 +42,39 @@ mvn -v
 
 ## 3、Win系统 -  Maven 安装和配置
 
+### 步骤1：解压
+
+### 步骤2：配置环境变量
+
+```bash
+# 新建系统变量
+MAVEN_HOME
+maven安装地址
+
+# 系统变量 - Path变量
+%MAVEN_HOME%\bin
+```
+
 
 
 ## 4、Mac系统 -  Maven 安装和配置
 
 - 修改本地仓库默认路径
-- 
+
+---
+
+# 第二章 Maven 使用
+
+## 1、常见命令
+
+```bash
+# 将 maven 依赖树导出到 D:/tree.txt
+mvn dependency:tree -Doutput=D:/tree.txt
+```
+
+
+
+
 
 
 
