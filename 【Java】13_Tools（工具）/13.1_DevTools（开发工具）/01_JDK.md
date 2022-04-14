@@ -5,7 +5,7 @@
 - Oracle官方网站：http://www.oracle.com
 - Oracle官方网站中文页面：http://www.oracle.com/cn/index.html
 
-
+- 下载页面：https://www.oracle.com/java/technologies/downloads/#java11
 
 # 1、Docker - JDK安装和配置
 
