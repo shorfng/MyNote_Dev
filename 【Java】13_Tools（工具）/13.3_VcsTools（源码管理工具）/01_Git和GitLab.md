@@ -1,12 +1,10 @@
 > 当前位置：【Java】13_Tools（工具）-> 13.3_VcsTools（源码管理工具） -> 01_Git和GitLab
 
-# 1、Git简介
+# 第一章 Git 简介
 
 - 
 
-
-
-# 2、Git安装和配置
+# 第二章 Git 安装和配置
 
 Mac 系统默认安装位置：/usr/bin/git
 
@@ -44,11 +42,9 @@ git config user.name "蓝田_Loto"
 git config user.email "shorfng@126.com"
 ```
 
+# 第三章 Git 使用（命令行方式）
 
-
-# 3、Git的使用（命令行方式）
-
-## 3.1 代码回滚到特定版本
+## 1、代码回滚到特定版本
 
 - 步骤1：查找 commitId
 
@@ -76,19 +72,19 @@ git push -f
 
 
 
-# 4、idea中使用Git
+# 第四章 Git 在 idea 中的使用
 
-## 4.1 配置 idea 
+## 1、Git 在 idea 中的使用
+
+### 1.1 配置 idea 
 
 - 配置1：在文件的行号侧边栏中显示作者（右键 - > Annotate）
 
 - 配置2：创建新文件默认添加到Git（Settings -> VersionControl -> Confirmation -> Add silently）
 
-![img](images/0001.jpg)
+![img](image/0001.jpg)
 
-
-
-## 4.2 快捷键
+### 1.2 快捷键
 
 - 查看所有改动之处
 
@@ -109,7 +105,7 @@ Win：
 
 
 
-## 4.3 将SVN项目改成Git项目
+### 1.3 将SVN项目改成Git项目
 
 - 路径：项目 -> .idea ->vcs.xml
 
@@ -119,15 +115,15 @@ Win：
 
 
 
-# 5、idea中使用GitHub
+## 2、GitHub 在 idea 中的使用
 
 - 
 
 
 
-# 6、idea中使用GitLab
+## 3、GitLab 在 idea 中的使用
 
-## 6.1 本地项目提交到GitLab - 配置 SSH Keys
+### 3.1 本地项目提交到GitLab - 配置 SSH Keys
 
 - 步骤1：检查是否显示有id_rsa.pub或者id_dsa.pub存在
 
@@ -154,18 +150,8 @@ ssh-keygen -t rsa -C "shorfng@126.com"
 
 - 步骤5：在idea中，打开将要上传的项目
 
+# 第五章 报错
 
-
-# 7、idea中使用SVN
-
-## 7.1 把项目上传到SVN
-
-![img](images/0002.jpg)
-
-
-
-# 8、报错
-
-## remote: No anonymous write access
+## 1、remote: No anonymous write access
 
 - 解决方案：控制面板 -> 用户帐户 -> 凭据管理器，将关于GitHub的凭证删除掉

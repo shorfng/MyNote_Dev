@@ -57,3 +57,10 @@ mkdir branches
 mkdir tags
 ```
 
+
+
+## idea中使用SVN
+
+### 把项目上传到SVN
+
+![img](image/0002.jpg)
