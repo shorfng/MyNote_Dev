@@ -28,8 +28,6 @@ docker save openjdk:8-alpine3.9 -o jdk8.tar
 docker load -i jdk8.tar
 ```
 
-
-
 # 2、Linux系统 -  JDK安装和配置
 
 ### 2.1 使用上传安装包形式
@@ -73,13 +71,11 @@ source /etc/profile
 java -version
 ```
 
-
-
 ### 2.2 使用yum安装JDK
 
 ```bash
 yum -y list java*
-yum -y install java-1.7.0-openjdk*
+yum -y install java-1.8.0-openjdk*
 
 # 默认jdk安装路径：/usr/lib/jvm
 
@@ -87,15 +83,13 @@ yum -y install java-1.7.0-openjdk*
 vi /etc/profile
 
 # 配置
-export JAVA_HOME=/usr/lib/jvm/java-1.7.0
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.332.b09-1.el7_9.x86_64/
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 export PATH=$PATH:$JAVA_HOME/bin
 
 # 使配置生效
 source /etc/profile
 ```
-
-
 
 # 3、Win系统 -  JDK安装和配置
 
@@ -108,28 +102,29 @@ source /etc/profile
 - JDK无需每次都安装，因为其本身就是绿色版本，可以直接存入U盘，在任何计算机上都可以直接使用
 - 采用安装的方式使用JDK的好处在于其会在注册表中被注册，当JDK出现新版本，会自动更新
 
-
-
 ## 步骤1：配置 path 环境变量
 
 - 配置目的
   - 为了能在DOS命令行窗口中，在任何目录下都能够执行Java的bin目录下javac命令
   - 需要将javac.exe命令文件所在目录的路径放入path环境变量中
   - path是记录所有在dos命令行中可直接运行的.exe文件的目录
-  
 - 原理
   - 在DOS命令提示符窗口中输入某个命令后，Windows系统会首先在当前目录下查找是否存在该命令文件可以执行
   - 如果没有，Windows系统就会在path环境变量路径中查找
   - 如果查找到，就会执行该命令，如果还没有找到，那么就会提示错误信息
-  
 - 操作步骤
-  - 步骤1：计算机 -> 右键属性 -> 高级系统设置 -> 高级 -> 环境变量 -> 系统变量
-  - 步骤2：创建新的变量名称：JAVA_HOME
-  - 步骤3：为JAVA_HOME添加变量值：xxx（xxx为JDK安装根目录）
-  - 步骤4：在path环境变量最前面添加如下内容：%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
-  - 步骤5：DOS下输入 java -version 后显示一串文字，则表示配置成功
 
+```java
+// 步骤1：计算机 -> 右键属性 -> 高级系统设置 -> 高级 -> 环境变量 -> 系统变量
+// 步骤2：创建新的变量名称：JAVA_HOME
+// 步骤3：为JAVA_HOME添加变量值：xxx（xxx为JDK安装根目录）
 
+// 步骤4：在path环境变量最前面添加如下内容
+%JAVA_HOME%\bin
+%JAVA_HOME%\jre\bin
+    
+// 步骤5：DOS下输入 java -version 后显示一串文字，则表示配置成功
+```
 
 ## 步骤2：配置 classpath 环境变量
 
@@ -159,8 +154,6 @@ source /etc/profile
 - 在DOS窗口中输入：JDK安装路径\bin\javac.exe
 - 如果正常显示一些内容，说明安装成功
 
-
-
 # 4、Mac系统 -  JDK安装和配置
 
 - 查看JDK安装路径
@@ -175,7 +168,7 @@ source /etc/profile
 
 - 配置环境变量
 
-```sh
+```bash
 #（1）新建隐藏的.bash_profile配置文件
 touch .bash_profile
 
