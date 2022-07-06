@@ -1,3 +1,5 @@
+[![OSCS Status](https://www.oscs1024.com/platform/badge/shorfng/MyNote_Being-A-Full-Stack-Developer.git.svg?size=small)](https://www.murphysec.com/dr/0OqsKOFxrIZKefPRbA)
+
 # GitHub仓库代码
 
 | 仓库名称                                                     | 涵盖内容                              |
@@ -37,6 +39,7 @@
 - Java_1.8_IO（IO流）
 - Java_1.9_Socket（网络编程）
 - Java_1.10_NewFeatures（Java新特性）
+- Java_1.11_Security（数据密码安全学）
 
 ### JavaCode_Pattern（设计模式）
 
@@ -72,18 +75,19 @@
 - Front_7.4_jQuery
 - Front_7.5_BootStrap
 - Front_7.6_Layui（前端框架）
+- Front_7.7_Vue（前端框架）
+- Front_7.8_React（前端框架）
+- Front_7.9_NodeJS
 
 ### JavCode_JavaWeb（前后端交互）
 
 - JavaWeb_8.1_HTTP（超文本传输协议）
-
 - JavaWeb_8.2_XML（可扩展的标记语言）
 - JavaWeb_8.3_JSON（数据交换格式）
 - JavaWeb_8.4_Servlet
-
 - JavaWeb_8.5_Ajax（异步JS和XML）
-
 - JavaWeb_8.6_JSP（Java服务器页面）
+- JavaWeb_8.7_Thymeleaf（模板引擎）
 
 ### JavaCode_Framework（开源框架）
 
@@ -119,6 +123,8 @@
 - Java_10.8_RocketMQ（分布式消息中间件）
 - Java_10.9_Kafka（分布式消息中间件）
 - Java_10.10_ElasticSearch（分布式搜索引擎）
+- Java_10.11_Ceph（分布式文件存储系统）
+- Java_10.12_ApacheDruid（海量日志收集）
 
 ### JavaCode_MicroService（微服务）
 
@@ -155,6 +161,10 @@
 - DevOps（运维部署）
   - Hudson
   - Jenkins
+
+### JavaSDK
+
+- 微信支付SDK
 
 
 
