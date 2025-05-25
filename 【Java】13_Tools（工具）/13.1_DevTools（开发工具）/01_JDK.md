@@ -2,10 +2,23 @@
 
 # 0、JDK的下载
 
+## 1、网站
+
 - Oracle官方网站：http://www.oracle.com
+
 - Oracle官方网站中文页面：http://www.oracle.com/cn/index.html
 
-- 下载页面：https://www.oracle.com/java/technologies/downloads/#java11
+## 2、下载页面
+
+- 英文下载页面：https://www.oracle.com/java/technologies/javase-downloads.html
+
+- 中文下载页面：https://www.oracle.com/cn/java/technologies/downloads/
+
+## 3、命名解释
+
+- 例如：jdk-7u72-windows-i586（jdk版本1.7的第72次更新，win系统32位的i5处理器）
+
+- 注意事项公司开发使用的jdk最好版本一致
 
 # 1、Docker - JDK安装和配置
 
@@ -45,7 +58,7 @@ rpm -e --nodeps java-1.6.0-openjdk-1.6.0.0-1.66.1.13.0.el6.x86_64rpm -e --nodeps
 cd /root/
 
 # 解压JDK到/usr/local目录下
-tar -zxvf jdk-11.0.13_linux-x64_bin.tar.gz
+tar -zxvf jdk-11.0.17_linux-x64_bin.tar.gz
 tar -zxvf Linux_JDK_8u171_x64.tar.gz -C /usr/local/
 
 # 配置JDK环境变量
@@ -53,7 +66,7 @@ vi /etc/profile
 
 # 将配置拷贝到最后一行
 # set java environment
-export JAVA_HOME=/usr/local/jdk-11.0.13
+export JAVA_HOME=/usr/local/jdk-11.0.17
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 export PATH=$PATH:$JAVA_HOME/bin
 
